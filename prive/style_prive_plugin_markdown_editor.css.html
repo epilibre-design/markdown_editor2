@@ -1,0 +1,51 @@
+.formulaire_spip .md_editor {
+	margin: 0;
+  width: 100%;
+  border: 1px solid var(--spip-form-input-border-color);
+  border-radius: var(--spip-form-input-border-radius);
+  background-color: var(--spip-color-white);
+}
+.spip-model {
+  background-color: var(--spip-color-theme-light);  /* Example styling */
+  padding: 2px 4px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.spip-model_id {
+	background-color: var(--spip-color-theme-lighter);
+}
+
+pre.spip-html {
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  padding: 8px;
+  font-family: monospace;
+  white-space: pre-wrap;
+  color: #d63384;
+}
+
+.spip-multi-inline:before {
+	content: "\003Cmulti\003E";
+	color: var(--spip-color-theme-dark);
+}
+.spip-multi-inline:after {
+	content: "\003C/multi\003E";
+	color: var(--spip-color-theme-dark);
+}
+.spip-multi-block{
+	margin-bottom: var(--spip-form-spacing-y);
+}
+.spip-multi-block:before {
+	content: "\003Cmulti\003E";
+	color: var(--spip-color-theme-dark);
+	display: block;
+}
+.spip-multi-block:after {
+	content: "\003C/multi\003E";
+	color: var(--spip-color-theme-dark);
+	display: block;
+	margin-top: calc(var(--spip-form-spacing-y) * -1);
+}
+span.spip-lang {
+	color: var(--spip-color-theme-dark);
+}

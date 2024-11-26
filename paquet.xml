@@ -1,0 +1,20 @@
+<paquet
+	prefix="markdown_editor"
+	version="1.0.0"
+	etat="stable"
+	compatibilite="[4.2.0;4.*]"
+	logo="markdown_editor.svg"
+	documentation=""
+>
+	<nom>Éditeur de texte Markdown pour SPIP</nom>
+	<!-- Il distribue votre courrier -->
+
+	<auteur lien="https://www.mukt.fr">Mukt</auteur>
+	<credit lien="https://tiptap.dev">TipTap</credit>
+	
+	<necessite nom="markdown" />
+	
+	<pipeline nom="header_prive" inclure="markdown_editor_pipelines.php" />
+	
+	<menu nom="configurer_markdown_editor" titre="markdown_editor:configuration_titre" parent="menu_configuration" icone="images/markdown_editor-16.svg" />
+</paquet>
