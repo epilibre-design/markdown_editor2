@@ -2,8 +2,9 @@ import { Node, mergeAttributes, nodeInputRule, nodePasteRule } from '@tiptap/cor
 import { Plugin } from 'prosemirror-state';
 
 const spip_model_pattern_input = /(<([a-z_-]{3,})\s*([0-9]*)\s*([|](?:<[^<>]*>|[^>])*?)?\s*>)$/is;
-const spip_model_pattern_parse = /^(<([a-z_-]{3,})\s*([0-9]*)\s*([|](?:<[^<>]*>|[^>])*?)?\s*>)/is;
 const spip_model_pattern_paste = /(<([a-z_-]{3,})\s*([0-9]*)\s*([|](?:<[^<>]*>|[^>])*?)?\s*>)/isg;
+const spip_model_pattern_parse_inline = /^(<([a-z_-]{3,})\s*([0-9]*)\s*([|](?:<[^<>]*>|[^>])*?)?\s*>)/is;
+const spip_model_pattern_parse_block = /^(<([a-z_-]{3,})\s*([0-9]*)\s*([|](?:<[^<>]*>|[^>])*?)?\s*>)$/is;
 
 const SpipModel = Node.create({
   name: 'spip_model',
@@ -115,9 +116,53 @@ const SpipModel = Node.create({
         // Parse a Markdown string to this node
         parse: {
 					setup(markdownit) {
-						// Ajouter une règle markdown-it pour reconnaitre les modèles SPIP
-						markdownit.inline.ruler.before('emphasis', 'spip_model', function (state, silent) {
-							const regex = spip_model_pattern_parse;
+						// Ajouter une règle markdown-it block pour reconnaitre les modèles SPIP tous seuls sur une ligne (hors paragraphe)
+						markdownit.block.ruler.before(
+							'html_block',           // avant la règle html_block native
+							'spip_model_block',     // nom de votre rule
+							(state, startLine, endLine, silent) => {
+								const openingLine = state.bMarks[startLine] + state.tShift[startLine];
+								const closingLine = state.eMarks[startLine];
+								const lineText = state.src.slice(openingLine, closingLine).trim();
+
+								// si ce n'est pas un modèle on sort
+								const regex = spip_model_pattern_parse_block;
+								const match = lineText.match(regex);
+								if (!match) return false;
+
+								if (!silent) {
+									// Ouvrir un paragraphe
+									state.push('paragraph_open', 'p', 1);
+									
+									// on pousse d'abord un token open
+									const token = state.push('spip_model', 'span', 1);
+									token.block = true;
+									token.content = match[0];
+									token.meta = {
+										full: match[0],
+										name: match[2],
+										id: match[3],
+										raw_params: match[4],
+										params: match[4] ? match[4].split('|').slice(1) : [],
+									};
+									token.meta.htmldata = JSON.stringify(token.meta);
+
+									// on crée aussi un token close (auto-fermeture atomique)
+									state.push('spip_model_close', 'span', -1);
+									
+									// Fermer le paragraphe
+									state.push('paragraph_close', 'p', -1);
+								}
+
+								// on passe à la ligne suivante
+								state.line = startLine + 1;
+								return true;
+							}
+						);
+						
+						// Ajouter une règle markdown-it inline pour reconnaitre les modèles SPIP à l'intérieur des paragraphes
+						markdownit.inline.ruler.before('emphasis', 'spip_model', (state, silent) => {
+							const regex = spip_model_pattern_parse_inline;
 							const match = state.src.slice(state.pos).match(regex);
 
 							if (!match) return false;
@@ -148,6 +193,8 @@ const SpipModel = Node.create({
 							span.setAttribute('data-spip_model', token.meta.htmldata);
 							return span.outerHTML;
 						};
+						// et on ignore spip_model_close
+						markdownit.renderer.rules.spip_model_close = () => '';
 					},
 				},
       },
