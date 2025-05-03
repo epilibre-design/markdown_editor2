@@ -1,10 +1,29 @@
-.formulaire_spip .md_editor {
+.formulaire_spip .md-editor {
+	position: relative;
 	margin: 0;
   width: 100%;
+  max-height: 90vh;
+  overflow: auto;
   border: 1px solid var(--spip-form-input-border-color);
   border-radius: var(--spip-form-input-border-radius);
   background-color: var(--spip-color-white);
 }
+.formulaire_spip .md-editor__menu {
+	position: sticky;
+	top: 0;
+	background-color: white;
+	z-index: 10;
+}
+.formulaire_spip .md-editor__wysiwyg {
+	padding: var(--spip-form-input-padding-y) var(--spip-form-input-padding-x);
+}
+.formulaire_spip .md-editor textarea {
+	border: 0;
+}
+.ProseMirror-focused {
+	outline: none;
+}
+
 .spip-model {
   background-color: var(--spip-color-theme-light);  /* Example styling */
   padding: 2px 4px;

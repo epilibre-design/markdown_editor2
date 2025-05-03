@@ -18,17 +18,17 @@ import SpipTrailingNode from './nodes/SpipTrailingNode';
 
 // On boucle sur tous les champs censés être des textareas avec du markdown
 document.querySelectorAll('.inserer_md_barre_edition').forEach((textarea, index) =>  {
-	// On crée un bloc après le textarea
-	const editor_block = document.createElement('div');
-	editor_block.classList.add('md_editor');
+	// On crée un bloc qui contiendra tout : boutons, wysiwyg, et textarea brut
+	const editor_wrapper = document.createElement('div');
+	editor_wrapper.classList.add('md-editor');
 	
 	const editor_menu = document.createElement('div');
-	editor_menu.classList = 'md_editor__menu groupe-btns groupe-btns_mini groupe-btns_menu';
-	editor_block.insertBefore(editor_menu, null);
+	editor_menu.classList = 'md-editor__menu groupe-btns groupe-btns_mini groupe-btns_menu';
+	editor_wrapper.insertBefore(editor_menu, null);
 	
-	const editor_wysiwyg = document.createElement('wysiwyg');
-	editor_wysiwyg.classList.add('md_editor__wysiwyg');
-	editor_block.insertBefore(editor_wysiwyg, null);
+	const editor_wysiwyg = document.createElement('div');
+	editor_wysiwyg.classList.add('md-editor__wysiwyg');
+	editor_wrapper.insertBefore(editor_wysiwyg, null);
 	
 	const commands = [
 		{ name: "bold", label: "Gras", command: 'toggleBold', disable: true },
@@ -37,7 +37,7 @@ document.querySelectorAll('.inserer_md_barre_edition').forEach((textarea, index)
 		{ name: "code", label: "Code", command: 'toggleCode', disable: true },
 		{ name: "clear marks", label: "Supprimer les styles", command: 'unsetAllMarks' },
 		{ name: "clear nodes", label: "Supprimer les nœuds", command: 'setParagraph' },
-		{ name: "paragraph", label: "Paragraphe", command: 'toggle' },
+		{ name: "paragraph", label: "Paragraphe", command: 'setParagraph' },
 		{ name: "heading", label: "H2", command: 'toggleHeading', argument: { level: 2 } },
 		{ name: "heading", label: "H3", command: 'toggleHeading', argument: { level: 3 } },
 		{ name: "heading", label: "H4", command: 'toggleHeading', argument: { level: 4 } },
@@ -94,8 +94,10 @@ document.querySelectorAll('.inserer_md_barre_edition').forEach((textarea, index)
 		}
 	}
 	
-	//~ editor_block.innerHTML<button class="btn_secondaire md_editor_bold" aria-pressed="false">Bold</button></div>'
-	textarea.parentNode.insertBefore(editor_block, textarea.nextSibling);
+	// On place le wrapper à l'endroit où il y avait le textarea
+	textarea.parentNode.insertBefore(editor_wrapper, textarea);
+	// Et on déplace le textarea dans le wrapper
+	editor_wrapper.insertBefore(textarea, null);
 	
 	// Créer un éditeur pour chaqun des champs
 	const editor = new Editor({
