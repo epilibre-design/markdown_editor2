@@ -14,6 +14,7 @@
 	
 	<necessite nom="markdown" />
 	
+	<pipeline nom="markdown_editor_toolbars" inclure="markdown_editor_pipelines.php" action="toolbars" />
 	<pipeline nom="header_prive" inclure="markdown_editor_pipelines.php" />
 	
 	<menu nom="configurer_markdown_editor" titre="markdown_editor:configuration_titre" parent="menu_configuration" icone="images/markdown_editor-16.svg" />
