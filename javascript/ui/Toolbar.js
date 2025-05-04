@@ -1,6 +1,7 @@
 import ButtonsGroup from './ButtonsGroup.js';
 import Spacer from './Spacer.js';
 import MarkButton from './MarkButton.js';
+import NodeButton from './NodeButton.js';
 import EditorModeButton from './EditorModeButton.js';
 // importer aussi NodeButton, HeaderList… au besoin
 
@@ -62,6 +63,7 @@ export class Toolbar {
 Toolbar.registerComponent('ButtonsGroup', ButtonsGroup);
 Toolbar.registerComponent('Spacer', Spacer);
 Toolbar.registerComponent('MarkButton', MarkButton);
+Toolbar.registerComponent('NodeButton', NodeButton);
 Toolbar.registerComponent('EditorModeButton', EditorModeButton);
 //~ Toolbar.registerComponent('NodeButton', NodeButton);
 //~ Toolbar.registerComponent('HeaderList', HeaderList);

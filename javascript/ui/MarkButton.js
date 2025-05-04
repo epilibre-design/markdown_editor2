@@ -78,6 +78,7 @@ export function shouldShowMarkButton({ editor, type, hideWhenUnavailable }) {
 	// Est-ce qu'il y a l'éditeur TipTap visible ou pas
 	const style = window.getComputedStyle(editor.options.element || editor.view.dom);
 	if (style.display == 'none') return false;
+	
 	if (!isMarkInSchema(type, editor)) return false;
 	if (!hideWhenUnavailable) return true;
 

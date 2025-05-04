@@ -44,6 +44,33 @@ function markdown_editor_toolbars($flux) {
 				],
 			],
 			[
+				'component' => 'ButtonsGroup',
+				'cssClass' => 'groupe-btns_nodes',
+				'children' => [
+					[
+						'component' => 'NodeButton',
+						'type' => 'blockquote',
+						'label' => 'Bloc de citation',
+						'title' => 'Mettre le bloc en citation',
+						'iconHTML' => '❝',
+					],
+					[
+						'component' => 'NodeButton',
+						'type' => 'bulletList',
+						'label' => 'Liste à puce',
+						'title' => 'Transformer en liste',
+						'iconHTML' => '• liste',
+					],
+					[
+						'component' => 'NodeButton',
+						'type' => 'codeBlock',
+						'label' => 'Bloc de code',
+						'title' => 'Transformer en bloc de code',
+						'iconHTML' => '&lt;/&gt;',
+					],
+				],
+			],
+			[
 				'component' => 'Spacer',
 			],
 			[
