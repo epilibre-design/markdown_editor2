@@ -115,7 +115,13 @@ document.querySelectorAll('[class*="inserer_md_barre"],  [data-md-editor-toolbar
 					StarterKit.configure({
 						heading: {
 							levels: [2, 3, 4, 5, 6], // Pas de H1 autorisé dans les textes
-						}
+						},
+						bulletList: {
+							HTMLAttributes: { class: 'spip'},
+						},
+						orderedList: {
+							HTMLAttributes: { class: 'spip'},
+						},
 					}),
 					Link.configure({
 						openOnClick: false,
