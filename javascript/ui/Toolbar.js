@@ -1,5 +1,6 @@
 import ButtonsGroup from './ButtonsGroup.js';
 import Spacer from './Spacer.js';
+import Separator from './Separator.js';
 import MarkButton from './MarkButton.js';
 import NodeButton from './NodeButton.js';
 import EditorModeButton from './EditorModeButton.js';
@@ -62,6 +63,7 @@ export class Toolbar {
 // On déclare les composants de base fournis par le plugin
 Toolbar.registerComponent('ButtonsGroup', ButtonsGroup);
 Toolbar.registerComponent('Spacer', Spacer);
+Toolbar.registerComponent('Separator', Separator);
 Toolbar.registerComponent('MarkButton', MarkButton);
 Toolbar.registerComponent('NodeButton', NodeButton);
 Toolbar.registerComponent('EditorModeButton', EditorModeButton);

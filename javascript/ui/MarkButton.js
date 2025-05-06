@@ -14,6 +14,15 @@ export function isMarkInSchema(type, editor) {
 	return Boolean(editor.schema.marks[type]);
 }
 
+export const markIcons = {
+	bold: 'sp-icone_bold',
+  italic: 'sp-icone_italic',
+  strike: 'sp-icone_strikethrough',
+  code: 'sp-icone_code-s-slash-line',
+  //~ superscript: '',
+  //~ subscript: '',
+}
+
 /**
  * Vérifie si on peut switcher une mark donné.
  * @param {Editor} editor 
@@ -120,7 +129,8 @@ export function getFormattedMarkName(type) {
 export class MarkButton {
 	constructor(editor, {
 		type,
-		iconHTML = '',
+		iconClass = '',
+		iconOnly = false,
 		label = '',
 		title = '',
 		hideWhenUnavailable = false,
@@ -135,12 +145,12 @@ export class MarkButton {
 		// Crée le DOM du bouton
 		this.btn = document.createElement('button');
 		this.btn.type = 'button';
-		this.btn.className = 'btn_link btn_mark btn_mark_' + this.type;
-		this.btn.innerHTML = iconHTML || getFormattedMarkName(type);
-		this.btn.title = title || getFormattedMarkName(type);
+		this.btn.className = 'btn_link btn_mark btn_mark_' + this.type + ' ' + (iconClass || markIcons[this.type]);
+		this.btn.innerHTML = '<span class="btn__label" ' + (iconOnly ? 'hidden' : '') + '>' + label || getFormattedMarkName(type) + '</span>';
+		this.btn.title = title || label || getFormattedMarkName(type);
 		this.btn.setAttribute('aria-label', label || getFormattedMarkName(type));
 
-		// Clic → toggle
+		// Événement au clic
 		this.btn.addEventListener('click', () => this.handleClick());
 
 		// Mise à jour à chaque transaction

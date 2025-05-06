@@ -1,7 +1,14 @@
 /* -------------------------------------
  * Fonctions utilitaires pour les nodes 
  * -------------------------------------*/
- 
+
+export const nodeIcons = {
+	blockquote: 'sp-icone_quote-text',
+  codeBlock: 'sp-icone_code-block',
+  bulletList: 'sp-icone_list-unordered',
+  orderedList: 'sp-icone_list-ordered-2',
+}
+
 export function canToggleNode(editor, type, attrs = {}) {
   if (!editor) return false;
   try {
@@ -69,7 +76,8 @@ export function getFormattedNodeName(type) {
 export class NodeButton {
   constructor(editor, {
     type,
-    iconHTML = '',
+    iconClass = '',
+		iconOnly = false,
     label = '',
 		title = '',
     attrs = {},
@@ -86,21 +94,21 @@ export class NodeButton {
     // Création du bouton
     this.btn = document.createElement('button');
     this.btn.type = 'button';
-    this.btn.className = 'btn_link btn_node btn_node_' + this.type;
-    this.btn.innerHTML = iconHTML || getFormattedNodeName(type);
-    this.btn.title = title || getFormattedNodeName(type);
+    this.btn.className = 'btn_link btn_node btn_node_' + this.type + ' ' + (iconClass || nodeIcons[this.type]);
+    this.btn.innerHTML = '<span class="btn__label" ' + (iconOnly ? 'hidden' : '') + '>' + label || getFormattedMarkName(type) + '</span>';
+    this.btn.title = title || label || getFormattedNodeName(type);
     this.btn.setAttribute('aria-label', label || getFormattedNodeName(type));
 
     // événement clic
     this.btn.addEventListener('click', () => this.handleClick());
 
-    // mise à jour à chaque transaction
+    // Mise à jour à chaque transaction
     this.editor.on('transaction', () => this.updateState());
 
-    // état initial
+    // État initial
     this.updateState();
 
-    // insertion
+    // Insertion
     if (container) {
 			container.appendChild(this.btn);
 		}

@@ -13,6 +13,7 @@
 	top: 0;
 	display: flex;
 	flex-flow: row;
+	align-items: center;
 	width: 100%;
 	background-color: white;
 	border-bottom: 1px solid var(--spip-box-sep-color);
@@ -21,8 +22,15 @@
 .md-editor__menu .groupe-btns {
 	margin: 0;
 }
+.md-editor__menu .groupe-btns button {
+	border: 0;
+}
 .md-editor__spacer {
 	flex: 1;
+}
+.md-editor__separator {
+	height: 1.5em;
+	border-left: 1px solid var(--spip-box-sep-color);
 }
 .md-editor__wysiwyg {
 	padding: var(--spip-form-input-padding-y) var(--spip-form-input-padding-x);

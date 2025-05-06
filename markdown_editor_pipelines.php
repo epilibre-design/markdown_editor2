@@ -15,6 +15,7 @@ function markdown_editor_header_prive($flux) {
 	</script>';
 	
 	$flux .= '<script type="module" src="'.find_in_path('javascript/markdown_editor.dist.js').'"></script>';
+	$flux .= '<link rel="stylesheet" href="'.find_in_path('fonts/md-editor_icons.css').'" type="text/css"/>';
 	
 	return $flux;
 }
@@ -25,26 +26,6 @@ function markdown_editor_toolbars($flux) {
 		'edition' => [
 			[
 				'component' => 'ButtonsGroup',
-				'cssClass' => 'groupe-btns_marks',
-				'children' => [
-					[
-						'component' => 'MarkButton',
-						'type' => 'bold',
-						'label' => 'Gras',
-						'title' => 'Mettre en gras / Ctrl-B',
-						'iconHTML' => 'G',
-					],
-					[
-						'component' => 'MarkButton',
-						'type' => 'italic',
-						'label' => 'Italique',
-						'title' => 'Mettre en italique / Ctrl-I',
-						'iconHTML' => 'I',
-					],
-				],
-			],
-			[
-				'component' => 'ButtonsGroup',
 				'cssClass' => 'groupe-btns_nodes',
 				'children' => [
 					[
@@ -52,21 +33,58 @@ function markdown_editor_toolbars($flux) {
 						'type' => 'blockquote',
 						'label' => 'Bloc de citation',
 						'title' => 'Mettre le bloc en citation',
-						'iconHTML' => '❝',
+						'iconOnly' => true,
 					],
 					[
 						'component' => 'NodeButton',
 						'type' => 'bulletList',
 						'label' => 'Liste à puce',
 						'title' => 'Transformer en liste',
-						'iconHTML' => '• liste',
+						'iconOnly' => true,
 					],
 					[
 						'component' => 'NodeButton',
 						'type' => 'codeBlock',
 						'label' => 'Bloc de code',
 						'title' => 'Transformer en bloc de code',
-						'iconHTML' => '&lt;/&gt;',
+						'iconOnly' => true,
+					],
+				],
+			],
+			[
+				'component' => 'Separator',
+			],
+			[
+				'component' => 'ButtonsGroup',
+				'cssClass' => 'groupe-btns_marks',
+				'children' => [
+					[
+						'component' => 'MarkButton',
+						'type' => 'bold',
+						'label' => 'Gras',
+						'title' => 'Mettre en gras / Ctrl-B',
+						'iconOnly' => true,
+					],
+					[
+						'component' => 'MarkButton',
+						'type' => 'italic',
+						'label' => 'Italique',
+						'title' => 'Mettre en italique / Ctrl-I',
+						'iconOnly' => true,
+					],
+					[
+						'component' => 'MarkButton',
+						'type' => 'code',
+						'label' => 'Code',
+						'title' => 'Code en ligne',
+						'iconOnly' => true,
+					],
+					[
+						'component' => 'MarkButton',
+						'type' => 'cite',
+						'label' => 'Citation',
+						'title' => 'Citation',
+						'iconOnly' => true,
 					],
 				],
 			],
