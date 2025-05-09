@@ -134,6 +134,7 @@ export function launch_markdown_editor() {
 						}),
 						Table.configure({
 							resizable: true,
+							HTMLAttributes: {class: 'spip'},
 						}),
 						TableRow,
 						TableHeader,

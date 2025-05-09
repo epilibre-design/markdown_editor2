@@ -29,6 +29,12 @@ function markdown_editor_toolbars($flux) {
 				'cssClass' => 'groupe-btns_nodes',
 				'children' => [
 					[
+						'component' => 'HeadingDropdownMenu',
+						'levels' => [2, 3, 4, 5, 6],
+						'labelBase' => 'Titre',
+						'iconOnly' => true,
+					],
+					[
 						'component' => 'NodeButton',
 						'type' => 'blockquote',
 						'label' => 'Bloc de citation',
@@ -36,7 +42,7 @@ function markdown_editor_toolbars($flux) {
 						'iconOnly' => true,
 					],
 					[
-						'component' => 'NodeButton',
+						'component' => 'ListButton',
 						'type' => 'bulletList',
 						'label' => 'Liste à puce',
 						//~ 'title' => 'Transformer en liste',

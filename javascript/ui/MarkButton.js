@@ -121,7 +121,10 @@ export function getFormattedMarkName(type) {
  * @param {Editor} editor  Instance de Tiptap
  * @param {object} options
  *   - type: string (ex. 'bold')
- *   - iconHTML?: string (HTML ou texte à insérer dans le bouton)
+ *   - iconClass?: string
+ *   - iconOnly?: boolean
+ *   - label?: string
+ *   - title?: string
  *   - hideWhenUnavailable?: boolean (masquer si non dispo)
  *   - userDisabled?: boolean (désactiver forcé)
  *   - container?: HTMLElement (parent où insérer)
@@ -146,7 +149,7 @@ export class MarkButton {
 		this.btn = document.createElement('button');
 		this.btn.type = 'button';
 		this.btn.className = 'btn_link btn_mark btn_mark_' + this.type + ' ' + (iconClass || markIcons[this.type]);
-		this.btn.innerHTML = '<span class="btn__label" ' + (iconOnly ? 'hidden' : '') + '>' + label || getFormattedMarkName(type) + '</span>';
+		this.btn.innerHTML = '<span class="btn__label" ' + (iconOnly ? 'hidden' : '') + '>' + (label || getFormattedMarkName(type)) + '</span>';
 		this.btn.title = title || label || getFormattedMarkName(type);
 		this.btn.setAttribute('aria-label', label || getFormattedMarkName(type));
 

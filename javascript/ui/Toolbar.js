@@ -3,6 +3,9 @@ import Spacer from './Spacer.js';
 import Separator from './Separator.js';
 import MarkButton from './MarkButton.js';
 import NodeButton from './NodeButton.js';
+import HeadingButton from './HeadingButton.js';
+import HeadingDropdownMenu from './HeadingDropdownMenu.js';
+import ListButton from './ListButton.js';
 import EditorModeButton from './EditorModeButton.js';
 // importer aussi NodeButton, HeaderList… au besoin
 
@@ -66,6 +69,9 @@ Toolbar.registerComponent('Spacer', Spacer);
 Toolbar.registerComponent('Separator', Separator);
 Toolbar.registerComponent('MarkButton', MarkButton);
 Toolbar.registerComponent('NodeButton', NodeButton);
+Toolbar.registerComponent('HeadingButton', HeadingButton);
+Toolbar.registerComponent('HeadingDropdownMenu', HeadingDropdownMenu);
+Toolbar.registerComponent('ListButton', ListButton);
 Toolbar.registerComponent('EditorModeButton', EditorModeButton);
 //~ Toolbar.registerComponent('NodeButton', NodeButton);
 //~ Toolbar.registerComponent('HeaderList', HeaderList);

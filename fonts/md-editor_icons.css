@@ -7,35 +7,36 @@
 */
 
 @font-face {
-    font-family: "md-editor_icons";
-    src: 	url("md-editor_icons.woff2?t=1746482362741") format("woff2"),
-					url("md-editor_icons.woff?t=1746482362741") format("woff");
-    font-display: swap;
+	font-family: "md-editor_icons";
+	src: 	url("md-editor_icons.woff2?t=1746482362741") format("woff2"),
+				url("md-editor_icons.woff?t=1746482362741") format("woff");
+	font-display: swap;
 }
 
-[class^="sp-icone_"], [class*="sp-icone_"] {
-    font-family: 'md-editor_icons' !important;
-    font-style: normal;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+[class^="sp-icone_"]:before, [class*="sp-icone_"]:before {
+	margin-inline-end: var(--spip-btn-gutter);
+	font-family: 'md-editor_icons' !important;
+	font-style: normal;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
 
-.sp-icone_lg { font-size: 1.3333em; line-height: 0.75em; vertical-align: -.0667em; }
-.sp-icone_xl { font-size: 1.5em; line-height: 0.6666em; vertical-align: -.075em; }
-.sp-icone_xxs { font-size: .5em; }
-.sp-icone_xs { font-size: .75em; }
-.sp-icone_sm { font-size: .875em }
-.sp-icone_1x { font-size: 1em; }
-.sp-icone_2x { font-size: 2em; }
-.sp-icone_3x { font-size: 3em; }
-.sp-icone_4x { font-size: 4em; }
-.sp-icone_5x { font-size: 5em; }
-.sp-icone_6x { font-size: 6em; }
-.sp-icone_7x { font-size: 7em; }
-.sp-icone_8x { font-size: 8em; }
-.sp-icone_9x { font-size: 9em; }
-.sp-icone_10x { font-size: 10em; }
-.sp-icone_fw { text-align: center; width: 1.25em; }
+.sp-icone_lg:before { font-size: 1.3333em; line-height: 0.75em; vertical-align: -.0667em; }
+.sp-icone_xl:before { font-size: 1.5em; line-height: 0.6666em; vertical-align: -.075em; }
+.sp-icone_xxs:before { font-size: .5em; }
+.sp-icone_xs:before { font-size: .75em; }
+.sp-icone_sm:before { font-size: .875em }
+.sp-icone_1x:before { font-size: 1em; }
+.sp-icone_2x:before { font-size: 2em; }
+.sp-icone_3x:before { font-size: 3em; }
+.sp-icone_4x:before { font-size: 4em; }
+.sp-icone_5x:before { font-size: 5em; }
+.sp-icone_6x:before { font-size: 6em; }
+.sp-icone_7x:before { font-size: 7em; }
+.sp-icone_8x:before { font-size: 8em; }
+.sp-icone_9x:before { font-size: 9em; }
+.sp-icone_10x:before { font-size: 10em; }
+.sp-icone_fw:before { text-align: center; width: 1.25em; }
 
 .sp-icone_bold:before { content: "\ead1"; }
 .sp-icone_italic:before { content: "\ee6b"; }

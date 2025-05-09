@@ -67,7 +67,10 @@ export function getFormattedNodeName(type) {
  * @param {Editor} editor
  * @param {object} options
  *   - type: string (e.g. 'blockquote')
- *   - iconHTML?: string
+ *   - iconClass?: string
+ *   - iconOnly?: boolean
+ *   - label?: string
+ *   - title?: string
  *   - attrs?: object   (attributs du node)
  *   - hideWhenUnavailable?: boolean
  *   - userDisabled?: boolean
@@ -95,7 +98,7 @@ export class NodeButton {
     this.btn = document.createElement('button');
     this.btn.type = 'button';
     this.btn.className = 'btn_link btn_node btn_node_' + this.type + ' ' + (iconClass || nodeIcons[this.type]);
-    this.btn.innerHTML = '<span class="btn__label" ' + (iconOnly ? 'hidden' : '') + '>' + label || getFormattedMarkName(type) + '</span>';
+    this.btn.innerHTML = '<span class="btn__label" ' + (iconOnly ? 'hidden' : '') + '>' + (label || getFormattedNodeName(type)) + '</span>';
     this.btn.title = title || label || getFormattedNodeName(type);
     this.btn.setAttribute('aria-label', label || getFormattedNodeName(type));
 
