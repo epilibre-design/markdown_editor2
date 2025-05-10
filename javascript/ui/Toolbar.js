@@ -6,6 +6,7 @@ import NodeButton from './NodeButton.js';
 import HeadingButton from './HeadingButton.js';
 import HeadingDropdownMenu from './HeadingDropdownMenu.js';
 import ListButton from './ListButton.js';
+import ListDropdownMenu from './ListDropdownMenu.js';
 import EditorModeButton from './EditorModeButton.js';
 // importer aussi NodeButton, HeaderList… au besoin
 
@@ -72,6 +73,7 @@ Toolbar.registerComponent('NodeButton', NodeButton);
 Toolbar.registerComponent('HeadingButton', HeadingButton);
 Toolbar.registerComponent('HeadingDropdownMenu', HeadingDropdownMenu);
 Toolbar.registerComponent('ListButton', ListButton);
+Toolbar.registerComponent('ListDropdownMenu', ListDropdownMenu);
 Toolbar.registerComponent('EditorModeButton', EditorModeButton);
 //~ Toolbar.registerComponent('NodeButton', NodeButton);
 //~ Toolbar.registerComponent('HeaderList', HeaderList);

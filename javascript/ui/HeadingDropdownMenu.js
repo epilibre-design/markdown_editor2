@@ -1,4 +1,5 @@
 import { headingIcons, canToggleHeading, isHeadingActive, toggleHeading, getFormattedHeadingName, HeadingButton } from './HeadingButton.js';
+import { isEditorVisible } from './utils.js';
 
 /**
  * Retourne le niveau de heading actif, ou 0 si aucun.
@@ -11,6 +12,36 @@ export function getActiveHeadingLevel(editor) {
 	}
 
 	return 0;
+}
+
+/**
+ * Le composant doit-il s'afficher ?
+ * 
+ * @param {Editor} editor
+ * @param {boolean} hideWhenUnavailable
+ */
+export function shouldShowHeadingDropdownMenu(editor, hideWhenUnavailable = false) {
+	if (!isEditorVisible(editor)) return false;
+	if (!editor || !editor.schema.nodes.heading) return false;
+	if (!hideWhenUnavailable) return true;
+	if (editor.state.selection.node) return false;
+	return true;
+}
+
+/**
+ * Y a-t-il au moins un niveau de heading ok ?
+ * @param {Editor} editor
+ * @param {number[]} levels
+ * @returns {boolean}
+ */
+export function canToggleAnyHeading(editor, levels = [1,2,3,4,5,6]) {
+  return levels.some(level => {
+    try {
+      return editor.can().toggleHeading({ level });
+    } catch {
+      return false;
+    }
+  });
 }
 
 /**
@@ -61,7 +92,7 @@ export class HeadingDropdownMenu {
 		this.wrapper.appendChild(this.menu);
 
 		// Items : un HeadingButton par niveau, dans le menu
-    levels.forEach(level => {
+    this.levels.forEach(level => {
       new HeadingButton(editor, {
         level,
         'labelBase': labelBase,
@@ -86,12 +117,16 @@ export class HeadingDropdownMenu {
 	 * Met à jour l’icône/texte du bouton racine selon le niveau actif.
 	 */
 	updateState() {
-		// Est-ce qu'il y a l'éditeur TipTap visible ou pas
-		const style = window.getComputedStyle(this.editor.options.element || this.editor.view.dom);
-		this.wrapper.style.display = (style.display == 'none') ? 'none' : '';
+		// affichage conditionnel
+		const show = shouldShowHeadingDropdownMenu(
+			this.editor,
+			this.hideWhenUnavailable
+		);
+		this.wrapper.style.display = show ? '' : 'none';
+		if (!show) return;
 		
 		// Active
-		const active = isHeadingActive(this.editor, this.level);
+		const active = isHeadingActive(this.editor);
 		this.toggleBtn.classList.toggle('btn_on', active);
 		if (active) {
 			this.toggleBtn.setAttribute('aria-pressed', 'true');
@@ -99,6 +134,10 @@ export class HeadingDropdownMenu {
 		else {
 			this.toggleBtn.setAttribute('aria-pressed', 'false');
 		}
+		
+		// Désactivé ou pas
+		const any = canToggleAnyHeading(this.editor, this.levels);
+		this.toggleBtn.disabled = !any;
 		
 		// Quel nouveau level
 		const level = getActiveHeadingLevel(this.editor);

@@ -63,8 +63,9 @@ export function toggleList(editor, type) {
   }
 }
 
-/* Les autres utilitaires restent inchangés */
-
+/**
+ * Désactivé ou pas
+ */
 export function isListButtonDisabled(editor, type, userDisabled = false) {
   if (!editor) return true;
   if (userDisabled) return true;
@@ -90,15 +91,26 @@ export function getFormattedListName(type) {
     .replace(/^./, str => str.toUpperCase());
 }
 
-
-/* ------------------------------------------------------------------------
- * Classe ListButton (inchangée à part les utilitaires appelés)
- * ------------------------------------------------------------------------ */
-
+/**
+ * Bouton dédié pour les listes
+ * 
+ * @param {Editor} editor
+ * @param {object} options
+ *   - type?: string
+ *   - iconClass?: string
+ *   - moreClass?: string
+ *   - iconOnly?: boolean
+ *   - label?: string
+ *   - title?: string
+ *   - hideWhenUnavailable?: boolean
+ *   - userDisabled?: boolean
+ *   - container?: HTMLElement
+ */
 export class ListButton {
   constructor(editor, {
     type,
     iconClass = '',
+    moreClass = '',
     iconOnly = false,
     label = '',
     title = '',
@@ -114,7 +126,7 @@ export class ListButton {
 
     this.btn = document.createElement('button');
     this.btn.type = 'button';
-    this.btn.className = 'btn_link btn_node btn_node_' + this.type + ' ' + (iconClass || listIcons[this.type]);;
+    this.btn.className = 'btn_link btn_node btn_node_' + this.type + ' ' + (iconClass || listIcons[this.type]) + ' ' + moreClass;
     this.btn.innerHTML = '<span class="btn__label" ' + (iconOnly ? 'hidden' : '') + '>' + (label || getFormattedListName(type)) + '</span>';
     this.btn.title = title || label || getFormattedListName(type);
     this.btn.setAttribute('aria-label', label || getFormattedListName(type));
@@ -146,12 +158,12 @@ export class ListButton {
     this.btn.style.display = show ? '' : 'none';
     if (!show) return;
 
-    const disabled = isListButtonDisabled(
-      this.editor,
-      this.type,
-      this.userDisabled
-    );
-    this.btn.disabled = disabled;
+    //~ const disabled = isListButtonDisabled(
+      //~ this.editor,
+      //~ this.type,
+      //~ this.userDisabled
+    //~ );
+    //~ this.btn.disabled = disabled;
 
     const active = isListActive(this.editor, this.type);
     this.btn.classList.toggle('btn_on', active);

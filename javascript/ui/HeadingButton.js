@@ -1,3 +1,5 @@
+import { isEditorVisible } from './utils.js';
+
 /***********************
  * Fonctions utilitaires 
  ***********************/
@@ -27,7 +29,7 @@ export function canToggleHeading(editor, level) {
 /**
  * Le heading de ce niveau est-il actif ?
  */
-export function isHeadingActive(editor, level) {
+export function isHeadingActive(editor, level=0) {
 	if (!editor) return false;
 	return level ? editor.isActive('heading', { 'level': level }) : editor.isActive('heading');
 }
@@ -59,10 +61,7 @@ export function isHeadingButtonDisabled(editor, level, userDisabled = false) {
  * Le composant doit-il s'afficher ?
  */
 export function shouldShowHeadingButton(editor, level, hideWhenUnavailable = false) {
-	// Est-ce qu'il y a l'éditeur TipTap visible ou pas
-	const style = window.getComputedStyle(editor.options.element || editor.view.dom);
-	if (style.display == 'none') return false;
-
+	if (!isEditorVisible(editor)) return false;
 	if (!editor || !editor.schema.nodes.heading) return false;
 	if (!hideWhenUnavailable) return true;
 	if (editor.state.selection.node) return false;

@@ -42,9 +42,15 @@ function markdown_editor_toolbars($flux) {
 						'iconOnly' => true,
 					],
 					[
-						'component' => 'ListButton',
-						'type' => 'bulletList',
-						'label' => 'Liste à puce',
+						'component' => 'ListDropdownMenu',
+						'label' => 'Liste',
+						'labels' => [
+							'bulletList' => 'Liste à puce',
+							'orderedList' => 'Liste numérotée',
+							'taskList' => 'Liste de tâches',
+							'indent' => 'Indenter',
+							'outdent' => 'Désindenter',
+						],
 						//~ 'title' => 'Transformer en liste',
 						'iconOnly' => true,
 					],
