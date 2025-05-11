@@ -35,13 +35,6 @@ function markdown_editor_toolbars($flux) {
 						'iconOnly' => true,
 					],
 					[
-						'component' => 'NodeButton',
-						'type' => 'blockquote',
-						'label' => 'Bloc de citation',
-						//~ 'title' => 'Mettre le bloc en citation',
-						'iconOnly' => true,
-					],
-					[
 						'component' => 'ListDropdownMenu',
 						'label' => 'Liste',
 						'labels' => [
@@ -52,6 +45,13 @@ function markdown_editor_toolbars($flux) {
 							'outdent' => 'Désindenter',
 						],
 						//~ 'title' => 'Transformer en liste',
+						'iconOnly' => true,
+					],
+					[
+						'component' => 'NodeButton',
+						'type' => 'blockquote',
+						'label' => 'Bloc de citation',
+						//~ 'title' => 'Mettre le bloc en citation',
 						'iconOnly' => true,
 					],
 					[
@@ -96,6 +96,19 @@ function markdown_editor_toolbars($flux) {
 						'type' => 'code',
 						'label' => 'Code',
 						'title' => 'Code en ligne',
+						'iconOnly' => true,
+					],
+					[
+						'component' => 'LinkPopover',
+						//~ 'autoOpenOnLink' => true,
+						'label' => 'Lien',
+						'labels' => [
+							'url' => 'URL',
+							'title' => 'Titre du lien',
+							'apply' => 'Valider le lien',
+							'open' => 'Ouvrir dans une nouvelle fenêtre',
+							'remove' => 'Retirer le lien',
+						],
 						'iconOnly' => true,
 					],
 				],

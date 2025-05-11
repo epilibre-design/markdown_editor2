@@ -82,7 +82,10 @@ export function shouldShowListDropdownMenu(editor, hideWhenUnavailable = false) 
  * @param {Editor} editor
  * @param {object} options
  *   - container: HTMLElement
- *   - iconHTML?: string (par défaut 'L')
+ *   - iconClass?: string
+ *   - iconOnly?: boolean
+ *   - label?: string
+ *   - labels?: object
  *   - types?: string[] (par défaut ['bulletList','orderedList','taskList'])
  *   - hideWhenUnavailable?: boolean
  */
@@ -95,7 +98,7 @@ export class ListDropdownMenu {
 		labels = {}, // labels de chaque type de boutons dans le menu
 		types = ['bulletList','orderedList','taskList'],
 		hideWhenUnavailable = false,
-	} = {}) {
+	}) {
 		const labelsDefault = {
 			'bulletList': 'Bullet list',
 			'orderedList': 'Ordered list',

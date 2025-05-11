@@ -14,11 +14,14 @@
 }
 
 [class^="sp-icone_"]:before, [class*="sp-icone_"]:before {
-	margin-inline-end: var(--spip-btn-gutter);
 	font-family: 'md-editor_icons' !important;
 	font-style: normal;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+}
+/* Une marge seulement s'il y a un autre enfant affiché que l'icone, à priori du texte arpès */
+[class^="sp-icone_"]:has(> *:not([hidden])):before, [class*="sp-icone_"]:has(> *:not([hidden])):before {
+	margin-inline-end: var(--spip-btn-gutter);
 }
 
 .sp-icone_lg:before { font-size: 1.3333em; line-height: 0.75em; vertical-align: -.0667em; }
