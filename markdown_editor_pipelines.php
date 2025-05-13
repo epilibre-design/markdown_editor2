@@ -29,6 +29,27 @@ function markdown_editor_toolbars($flux) {
 				'cssClass' => 'groupe-btns_nodes',
 				'children' => [
 					[
+						'component' => 'UndoRedoButton',
+						'type' => 'undo',
+						'label' => 'Annuler',
+						'iconOnly' => true,
+					],
+					[
+						'component' => 'UndoRedoButton',
+						'type' => 'redo',
+						'label' => 'Rétablir',
+						'iconOnly' => true,
+					],
+				],
+			],
+			[
+				'component' => 'Separator',
+			],
+			[
+				'component' => 'ButtonsGroup',
+				'cssClass' => 'groupe-btns_nodes',
+				'children' => [
+					[
 						'component' => 'HeadingDropdownMenu',
 						'levels' => [2, 3, 4, 5, 6],
 						'labelBase' => 'Titre',

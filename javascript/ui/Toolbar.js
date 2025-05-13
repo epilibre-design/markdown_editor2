@@ -8,6 +8,7 @@ import HeadingDropdownMenu from './HeadingDropdownMenu.js';
 import ListButton from './ListButton.js';
 import ListDropdownMenu from './ListDropdownMenu.js';
 import LinkPopover from './LinkPopover.js';
+import UndoRedoButton from './UndoRedoButton.js';
 import EditorModeButton from './EditorModeButton.js';
 // importer aussi NodeButton, HeaderList… au besoin
 
@@ -76,6 +77,7 @@ Toolbar.registerComponent('HeadingDropdownMenu', HeadingDropdownMenu);
 Toolbar.registerComponent('ListButton', ListButton);
 Toolbar.registerComponent('ListDropdownMenu', ListDropdownMenu);
 Toolbar.registerComponent('LinkPopover', LinkPopover);
+Toolbar.registerComponent('UndoRedoButton', UndoRedoButton);
 Toolbar.registerComponent('EditorModeButton', EditorModeButton);
 //~ Toolbar.registerComponent('NodeButton', NodeButton);
 //~ Toolbar.registerComponent('HeaderList', HeaderList);
