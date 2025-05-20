@@ -86,6 +86,57 @@ const SpipModel = Node.create({
     ]
   },
   
+	addCommands() {
+		return {
+			// Insérer un nouveau modèle
+			insertSpipModel:
+				(options) =>
+				({ commands, state }) => {
+					const { name, id, params = {} } = options;
+
+					// Construire raw_params et full
+					const paramStrings = Object.entries(params).map(([k, v]) => v==null ? `${k}` : `${k}=${v}`);
+					const raw_params = paramStrings.length ? '|' + paramStrings.join('|') : '';
+					const idPart = id ? id : '';
+					const full = `<${name}${idPart}${raw_params}>`;
+
+					// Attributs complets
+					const attrs = {
+						full,
+						name,
+						id:   idPart,
+						raw_params,
+						params: paramStrings,
+					};
+
+					// On récupère la position courante du curseur
+					const pos = state.selection.$anchor.pos;
+					// On insère la node à cette position
+					return commands.insertContentAt(pos, {
+						type: this.name,
+						attrs: { spip_model: attrs },
+					});
+				},
+
+			// Mettre à jour la node existante
+			updateSpipModel:
+      (options) =>
+      ({ commands }) => {
+        const { name, id, params = {} } = options;
+
+        // Reconstruire full, raw_params, paramStrings…
+        const paramStrings = Object.entries(params).map(([k, v]) => `${k}=${v}`);
+        const raw_params   = paramStrings.length ? '|' + paramStrings.join('|') : '';
+        const idPart       = id ? id : '';
+        const full         = `<${name}${idPart}${raw_params}>`;
+        const attrs = { full, name, id: idPart, raw_params, params: paramStrings };
+
+        // On se sert de la commande updateAttributes
+        return commands.updateAttributes(this.name, { spip_model: attrs });
+      },
+		};
+	},
+  
   addProseMirrorPlugins() {
     return [
       new Plugin({
