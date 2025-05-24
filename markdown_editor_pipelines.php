@@ -7,12 +7,15 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 function markdown_editor_header_prive($flux) {
 	$toolbars = pipeline('markdown_editor_toolbars', ['args' => [], 'data' => []]);
 	$toolbars = json_encode($toolbars);
-	$flux .= '<script type="module">
+	$url_modeles = generer_url_ecrire('inserer_modeles', 'var_zajax=contenu', true);
+	
+	$flux .= "<script type=\"module\">
 	window.spipConfig = window.spipConfig || {};
 	window.spipConfig.markdown_editor = {
-		toolbars: ' . $toolbars . '
+		toolbars: {$toolbars},
+		url_modeles: \"{$url_modeles}\"
 	};
-	</script>';
+	</script>";
 	
 	$flux .= '<script type="module" src="'.find_in_path('javascript/markdown_editor.dist.js').'"></script>';
 	$flux .= '<link rel="stylesheet" href="'.find_in_path('fonts/md-editor_icons.css').'" type="text/css"/>';
@@ -45,6 +48,7 @@ function markdown_editor_toolbars($flux) {
 			[
 				'component' => 'Separator',
 			],
+			// Groupe des modifications de blocs (nodes)
 			[
 				'component' => 'ButtonsGroup',
 				'cssClass' => 'groupe-btns_nodes',
@@ -87,6 +91,7 @@ function markdown_editor_toolbars($flux) {
 			[
 				'component' => 'Separator',
 			],
+			// Groupe des modifictateurs inlines (marks)
 			[
 				'component' => 'ButtonsGroup',
 				'cssClass' => 'groupe-btns_marks',
@@ -135,8 +140,25 @@ function markdown_editor_toolbars($flux) {
 				],
 			],
 			[
+				'component' => 'Separator',
+			],
+			// Groupe des éléments propres à SPIP
+			[
+				'component' => 'ButtonsGroup',
+				'cssClass' => 'groupe-btns_spip',
+				'children' => [
+					[
+						'component' => 'SpipModelButton',
+						'label' => 'Modèles',
+						'title' => 'Chercher et insérer un modèle',
+					],
+				],
+			],
+			// On décale sur la droite
+			[
 				'component' => 'Spacer',
 			],
+			// Le mode d'édition
 			[
 				'component' => 'ButtonsGroup',
 				'cssClass' => 'groupe-btns_marks',

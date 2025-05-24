@@ -28,6 +28,7 @@
 .md-editor__menu .groupe-btns button {
 	border: 0;
 	border-radius: 0;
+	--spip-btn-padding-x: 0.5rem;
 }
 .md-editor__menu button[disabled] {
 	opacity: 0.25; /* En attendant que ce soit corrigé dans la dist */
@@ -56,13 +57,13 @@
 /* Les nodes et marks supplémentaires propres à SPIP */
 
 .spip-model {
-  background-color: var(--spip-color-theme-light);  /* Example styling */
+  background-color: var(--spip-color-theme-lighter);  /* Example styling */
   padding: 2px 4px;
-  border-radius: 3px;
+  border-radius: var(--spip-border-radius);
   cursor: pointer;
 }
 .spip-model_id {
-	background-color: var(--spip-color-theme-lighter);
+	background-color: var(--spip-color-theme-light);
 }
 
 pre.spip-html {
@@ -98,4 +99,11 @@ pre.spip-html {
 }
 span.spip-lang {
 	color: var(--spip-color-theme-dark);
+}
+
+/* Formulaire quand dans un panneau */
+.box_mediabox .formulaire_inserer_modeles {
+	border: 0;
+	box-shadow: none;
+	margin: 1rem -1rem;
 }

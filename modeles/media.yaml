@@ -1,0 +1,92 @@
+nom: '<:inserer_modeles:nom_media:>'
+icone_barre: 'document-xx.svg'
+categorie:
+  type: 'medias'
+  rang: 1
+parametres:
+  -
+    saisie: 'hidden'
+    options:
+      nom: 'modele'
+      defaut: 'doc'
+  -
+    saisie: 'selecteur_document'
+    options:
+      nom: 'id_modele'
+      label: '<:inserer_modeles:label_id_document:>'
+      defaut: ''
+      env: 'oui'
+      obligatoire: 'oui'
+    verifier:
+      type: 'id_document'
+  -
+    saisie: 'selection'
+    options:
+      nom: 'align'
+      label: '<:inserer_modeles:label_alignement:>'
+      defaut: ''
+      data:
+        left: '<:inserer_modeles:item_left:>'
+        center: '<:inserer_modeles:item_center:>'
+        right: '<:inserer_modeles:item_right:>'
+  -
+      saisie: 'input'
+      options:
+        nom: 'largeur'
+        defaut: ''
+        label: '<:inserer_modeles:label_largeur:>'
+      verifier:
+        type: 'entier'
+        options:
+          min: 1
+  -
+      saisie: 'input'
+      options:
+        nom: 'hauteur'
+        defaut: ''
+        label: '<:inserer_modeles:label_hauteur:>'
+      verifier:
+        type: 'entier'
+        options:
+          min: 1
+  -
+      saisie: 'checkbox'
+      options:
+        nom: 'masquer'
+        label: '<:inserer_modeles:masquer:>'
+        data:
+          legende: '<:inserer_modeles:masquer_legende:>'
+          titre: '<:inserer_modeles:label_titre:>'
+          descriptif: '<:inserer_modeles:label_descriptif:>'
+          credits: '<:inserer_modeles:label_credits:>'
+  -
+      saisie: 'input'
+      options:
+        nom: 'titre'
+        defaut: ''
+        label: '<:inserer_modeles:label_titre:>'
+        explication: '<:inserer_modeles:explication_titre:>'
+        afficher_si: '@masquer@ !IN "legende" && @masquer@ !IN "titre"'
+  -
+      saisie: 'input'
+      options:
+        nom: 'descriptif'
+        defaut: ''
+        label: '<:inserer_modeles:label_descriptif:>'
+        explication: '<:inserer_modeles:explication_descriptif:>'
+        afficher_si: '@masquer@ !IN "legende" && @masquer@ !IN "descriptif"'
+  -
+      saisie: 'input'
+      options:
+        nom: 'credits'
+        defaut: ''
+        label: '<:inserer_modeles:label_credits:>'
+        explication: '<:inserer_modeles:explication_credits:>'
+        afficher_si: '@masquer@ !IN "legende" && @masquer@ !IN "credits"'
+  -
+      saisie: 'input'
+      options:
+        nom: 'alt'
+        defaut: ''
+        label: '<:inserer_modeles:label_alt:>'
+        explication: '<:inserer_modeles:explication_alt:>'

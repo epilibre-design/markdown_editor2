@@ -85,6 +85,7 @@ export function launch_markdown_editor() {
 					textarea.value = editor.storage.markdown.getMarkdown();
 				}
 		});
+		window.editor=editor;
 		
 		// Quel type de barre ?
 		let toolbar = '';
