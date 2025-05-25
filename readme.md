@@ -21,5 +21,6 @@ Ce plugin nécessite de nombreuses librairies JS, dont la dépendance est géré
 - [x] Interface avec des boutons pour les actions les plus courantes (ce serait plus simple en ayant résolu le ticket sur les icônes génériques !)
 - [x] Interface pour switcher entre le WYSIWYG et le code brut à éditer
 - [ ] Interface pour ajouter des modèles ET éditer les existants, quand on a un YAML de description (remplacer Insérer Modèles)
+- [ ] Refaire le #FORMULAIRE_INSERER_MODELES entièrement avec l'API de Saisies, sans squelettes, en utilisant les "inserer_debut/fin" pour les ajouts et la fonction `_saisies()`.
 - [ ] Pouvoir personnaliser la vue d'un modèle dans l'éditeur : par défaut c'est le code habituel, mais si on personnalise on pourrait y mettre ce qu'on veut suivant les modèles
 - [ ] Rendre l'éditeur extensible en pouvant rajouter des nodes ET des boutons depuis des sous-plugins de SPIP (exemple : plugin Todolist, plugin FAQ, plugin Onglets dans le texte : tout ce qui avant ajoutaient des choses en Textwheel ET au Porte-Plume). Attention, maintenant il faudrait plutôt étendre le markdown qu'ajouter en textwheel, côté PHP.

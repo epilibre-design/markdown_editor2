@@ -35,7 +35,8 @@ function inserer_modeles_lister_formulaires_modeles(bool $exclure_ignores = fals
 					'nom' => $nom,
 					'titre' => $nom, // Pour pouvoir trier comme on tri les saisies, on map titre sur nom
 					'categorie' => $yaml_data['categorie'] ?? ['type' => 'defaut', 'rang' => -1000],
-					'icone_barre' => isset($yaml_data['icone_barre']) ? inserer_modeles_find_icone_barre_path($yaml_data['icone_barre']) : ''
+					'icone_barre' => isset($yaml_data['icone_barre']) ? inserer_modeles_find_icone_barre_path($yaml_data['icone_barre']) : '',
+					'parametres' => $yaml_data['parametres'] ?? [],
 				];
 			}
 		}

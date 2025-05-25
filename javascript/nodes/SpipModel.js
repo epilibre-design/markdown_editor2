@@ -125,7 +125,7 @@ const SpipModel = Node.create({
         const { name, id, params = {} } = options;
 
         // Reconstruire full, raw_params, paramStrings…
-        const paramStrings = Object.entries(params).map(([k, v]) => `${k}=${v}`);
+        const paramStrings = Object.entries(params).map(([k, v]) => v==null ? `${k}` : `${k}=${v}`);
         const raw_params   = paramStrings.length ? '|' + paramStrings.join('|') : '';
         const idPart       = id ? id : '';
         const full         = `<${name}${idPart}${raw_params}>`;
@@ -143,9 +143,37 @@ const SpipModel = Node.create({
         props: {
           handleClickOn(view, pos, node, nodePos, event) {
             if (node.type.name === 'spip_model') {
-              // Open your custom form or editor here
-              // For example:
-              console.log('Clic sur le modèle:', node.attrs.spip_model);
+							// URL de base pour appeler la box
+							var url_box = window.spipConfig.markdown_editor.url_modeles + '&modalbox=oui';
+							
+							// On rajoute les infos du modèle déjà là
+							url_box = parametre_url(url_box, 'modele', node.attrs.spip_model.name);
+							url_box = node.attrs.spip_model.id ? parametre_url(url_box, 'id_modele', node.attrs.spip_model.id) : url_box;
+							url_box += node.attrs.spip_model.raw_params.replaceAll('|', '&');
+							
+              // Ouvre la modalbox SPIP
+							jQuery.modalbox(
+								url_box,
+								{
+									type: 'ajax',
+									sideBar: 'end',
+									className: 'lat popin',
+									onClose: (event) => {
+										const modele = event.target.querySelector('#code_modele_modalbox');
+										
+										// Si on trouve le champ
+										if (modele) {
+											const json = event.target.querySelector('#code_modele_modalbox').dataset.spip_model;
+											
+											if (json) {
+												const description = JSON.parse(json);
+												
+												editor.chain().focus().updateSpipModel(description).run();
+											}
+										}
+									}
+								}
+							);
               
               return true;
             }

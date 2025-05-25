@@ -1,11 +1,35 @@
 <?php
 
-
+function inserer_modeles_retrouver_formulaire_modele($modele) {
+	include_spip('inc/inserer_modeles');
+	$formulaire_modele = null;
+	
+	if ($modele) {
+		$formulaires_dispo = inserer_modeles_lister_formulaires_modeles();
+		
+		foreach ($formulaires_dispo as $formulaire => $description) {
+			// On parcourt toutes les saisies
+			foreach ($description['parametres'] as $saisie) {
+				// Si c'est un paramètre de modèle
+				if ($saisie['options']['nom'] == 'modele') {
+					// Si la valeur par défaut correspond au modèle demandé on arrête
+					// TODO : si plusieurs formulaires savent générer le même modèle, on verra plus tard pour améliorer
+					if (($saisie['options']['defaut'] ?? '') == $modele) {
+						return $formulaire;
+					}
+				}
+			}
+		}
+	}
+	
+	return $formulaire_modele;
+}
 
 function formulaires_inserer_modeles_charger_dist($formulaire_modele, $modalbox, $env) {
 	include_spip('inc/inserer_modeles');
 	$env = unserialize($env);
 	$contexte = [];
+	
 	// Toujours transmettre les id_(article/rubrique/breve...), et les garder en _request pour pouvoir s'en servir après dans l'interprétation du .yaml
 	foreach ($env as $var => $val) {
 		if (substr($var, 0, 3) == 'id_' && is_numeric($val)) {
@@ -13,6 +37,12 @@ function formulaires_inserer_modeles_charger_dist($formulaire_modele, $modalbox,
 			set_request($var, $val);
 		}
 	}
+	
+	// Si le formulaire est vide mais qu'il y a un modèle passé en paramètre, on tente de retrouver le formulaire
+	if (!$formulaire_modele && isset($env['modele'])) {
+		$formulaire_modele = inserer_modeles_retrouver_formulaire_modele($env['modele']);
+	}
+	
 	if ((!_request('formulaire_modele') && $formulaire_modele == '') || _request('annuler')) {
 		$modeles_dispo = inserer_modeles_lister_formulaires_modeles(true);
 		$contexte['_liste_formulaires_modeles'] = [inserer_modeles_generer_saisie_formulaire_modele($modeles_dispo, boolval($modalbox))];
@@ -28,8 +58,15 @@ function formulaires_inserer_modeles_charger_dist($formulaire_modele, $modalbox,
 		$champs_saisies = saisies_charger_champs($infos_modele['parametres']);
 		// On charge les valeurs éventuellement passées par l'url
 		foreach ($champs_saisies as $champ => $val) {
-			if (_request($champ)) {
-				$champs_saisies[$champ] = _request($champ);
+			if ($valeur = _request($champ)) {
+				$champs_saisies[$champ] = $valeur;
+			}
+			
+			// Cas particulier pour "align" dont seule la valeur est transmise
+			foreach (['left', 'center', 'right'] as $align) {
+				if (isset($env[$align])) {
+					$champs_saisies['align'] = $align;
+				}
 			}
 		}
 		$contexte = array_merge($contexte, $champs_saisies);
