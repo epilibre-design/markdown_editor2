@@ -20,7 +20,7 @@
 	width: 100%;
 	background-color: white;
 	border-bottom: 1px solid var(--spip-box-sep-color);
-	z-index: 10;
+	z-index: 100;
 }
 .md-editor__menu .groupe-btns {
 	margin: 0;
@@ -64,6 +64,27 @@
 }
 .spip-model_id {
 	background-color: var(--spip-color-theme-light);
+}
+.spip-model_compiled {
+	position: relative;
+}
+.spip-model_compiled::after {
+	content: '';
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	z-index: 9;
+}
+.spip-model_compiled:hover::after, .ProseMirror-selectednode .spip-model_compiled::after{
+	background-color: rgba(0,0,0,0.5);
+}
+.spip-model__btn {
+	position: absolute;
+	right: 0;
+	top: 0;
+	z-index: 10;
 }
 
 pre.spip-html {

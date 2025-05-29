@@ -6,6 +6,28 @@ const spip_model_pattern_paste = /(<([a-z_-]{3,})\s*([0-9]*)\s*([|](?:<[^<>]*>|[
 const spip_model_pattern_parse_inline = /^(<([a-z_-]{3,})\s*([0-9]*)\s*([|](?:<[^<>]*>|[^>])*?)?\s*>)/is;
 const spip_model_pattern_parse_block = /^(<([a-z_-]{3,})\s*([0-9]*)\s*([|](?:<[^<>]*>|[^>])*?)?\s*>)$/is;
 
+// Générer les attributs complets à partir des données centrales
+export function generateSpipModelAttributes(options) {
+	const { name, id, params = {} } = options;
+
+	// Construire raw_params et full
+	const paramStrings = Object.entries(params).map(([k, v]) => v==null ? `${k}` : `${k}=${v}`);
+	const raw_params = paramStrings.length ? '|' + paramStrings.join('|') : '';
+	const idPart = id ? id : '';
+	const full = `<${name}${idPart}${raw_params}>`;
+
+	// Attributs complets
+	const attrs = {
+		full,
+		name,
+		id:   idPart,
+		raw_params,
+		params: paramStrings,
+	};
+	
+	return attrs;
+};
+
 const SpipModel = Node.create({
   name: 'spip_model',
   
@@ -20,7 +42,8 @@ const SpipModel = Node.create({
       },
     ];
   },
-
+	
+	// Fallback basique quand il n'y a pas de NodeView
   renderHTML({ node, HTMLAttributes }) {
     //~ return ['span', mergeAttributes(HTMLAttributes, { 'data-spip_model': '' }), 0];
     return ['span', {...HTMLAttributes, class: 'spip-model'},
@@ -31,12 +54,143 @@ const SpipModel = Node.create({
 			'>'
     ];
   },
+  
+  // Rendu plus complexe en NodeView
+	addNodeView() {
+		return ({ editor, node, getPos, HTMLAttributes, decorations, extension }) => {
+			const { view } = editor;
+			const attrsJSON = JSON.stringify(node.attrs.spip_model);
+			// conteneur principal
+			const dom = document.createElement('div');
+
+			// appel AJAX SPIP pour récupérer le HTML compilé
+			const { full } = node.attrs.spip_model;
+			const formData = new FormData();
+			formData.append('modele', full);
+			formData.append('champ', '');
+			formData.append('objet', '');
+			fetch(window.spipConfig.markdown_editor.url_previsu, {
+				method: 'POST',
+				body: formData,
+				credentials: 'same-origin'
+			})
+				.then(response => {
+					if (!response.ok) throw new Error(`Erreur HTTP ${response.status}`);
+					return response.text();
+				})
+				.then(html => {
+					const temp = document.createElement('div');
+					let real_parent; // le vrai parent du modèle à afficher
+					let root = null;
+					temp.innerHTML = html.trim();
+					
+					if (temp.childNodes.length === 1 && temp.firstChild.nodeType === 1) {
+						// Un seul élément racine
+						real_parent = temp.firstChild;
+						dom.appendChild(real_parent);
+						dom.style.display = 'contents'; // ne rien afficher du parent pour se concentrer sur l'intérieur
+					} else {
+						// Plusieurs racines : encapsuler
+						while (temp.firstChild) {
+							dom.appendChild(temp.firstChild);
+							real_parent = dom;
+						}
+					}
+					real_parent.classList.add('spip-model_compiled');
+					real_parent.setAttribute('data-spip_model', attrsJSON);
+					real_parent.contentEditable = 'false'; // empêche l’édition interne
+					
+					// Désactiver du clavier tous les éléments interactifs
+					Array.from(real_parent.querySelectorAll(`
+						a[href],
+						button,
+						input,
+						select,
+						textarea,
+						[contenteditable],
+						[tabindex]
+					`)).forEach(el => {
+						// interdit la mise au focus
+						el.tabIndex = -1;
+						// pour les formulaires
+						if (el.disabled !== undefined) {
+							el.disabled = true;
+						}
+					});
+
+					// Bouton "Modifier"
+					const btn = document.createElement('button');
+					btn.type = 'button';
+					btn.className = 'btn_mini spip-model__btn';
+					btn.textContent = 'Modifier';
+					btn.addEventListener('click', () => {
+						// Replacer le curseur dans l'éditeur sur le node
+						editor.commands.setTextSelection(getPos());
+						
+						// URL de base pour appeler la box
+						let url_box = window.spipConfig.markdown_editor.url_modeles + '&modalbox=oui';
+						
+						// On rajoute les infos du modèle déjà là
+						url_box = parametre_url(url_box, 'modele', node.attrs.spip_model.name);
+						url_box = node.attrs.spip_model.id ? parametre_url(url_box, 'id_modele', node.attrs.spip_model.id) : url_box;
+						url_box += node.attrs.spip_model.raw_params.replaceAll('|', '&');
+						
+						// Ouvre la modalbox SPIP
+						jQuery.modalbox(
+							url_box,
+							{
+								type: 'ajax',
+								sideBar: 'end',
+								className: 'lat popin',
+								onClose: (event) => {
+									const modele = event.target.querySelector('#code_modele_modalbox');
+									
+									// Si on trouve le champ
+									if (modele && modele.dataset.spip_model) {
+										const attrs = generateSpipModelAttributes(JSON.parse(modele.dataset.spip_model));
+										console.log(attrs);
+										
+										// On met à jour le node
+										view.dispatch(
+											view.state.tr.setNodeMarkup(getPos(), undefined, {
+												spip_model: attrs
+											})
+										);
+										
+										// On remet le focus
+										editor.commands.focus();
+									}
+								}
+							}
+						);
+						
+						return true;
+					});
+					
+					// On insère le bouton dans le bon parent
+					real_parent.appendChild(btn);
+				})
+				.catch(error => {
+					console.warn('Erreur lors de la prévisualisation du modèle SPIP :', error);
+					// Fallback : censé repasser au renderHTML quand c'est vide
+					dom.classList.add('spip-model_fallback');
+					dom.innerHTML = node.attrs.spip_model.full;
+				});
+			
+			return {
+				dom,
+				contentDOM: null, // on ne veut pas d’édition interne
+			};
+		};
+	},
 
   addAttributes() {
     return {
       spip_model: {
         default: null,
-        parseHTML: (element) => JSON.parse(element.getAttribute('data-spip_model')),
+        parseHTML: (element) => {
+					return JSON.parse(element.getAttribute('data-spip_model'));
+				},
         renderHTML: (attributes) => {
           return {
             'data-spip_model': JSON.stringify(attributes.spip_model),
@@ -90,100 +244,32 @@ const SpipModel = Node.create({
 		return {
 			// Insérer un nouveau modèle
 			insertSpipModel:
-				(options) =>
-				({ commands, state }) => {
-					const { name, id, params = {} } = options;
+			(options) =>
+			({ commands, state }) => {
+				// Reconstruire les attributs complets à partir des options simplifiés de la commande
+				const attrs = generateSpipModelAttributes(options);
 
-					// Construire raw_params et full
-					const paramStrings = Object.entries(params).map(([k, v]) => v==null ? `${k}` : `${k}=${v}`);
-					const raw_params = paramStrings.length ? '|' + paramStrings.join('|') : '';
-					const idPart = id ? id : '';
-					const full = `<${name}${idPart}${raw_params}>`;
-
-					// Attributs complets
-					const attrs = {
-						full,
-						name,
-						id:   idPart,
-						raw_params,
-						params: paramStrings,
-					};
-
-					// On récupère la position courante du curseur
-					const pos = state.selection.$anchor.pos;
-					// On insère la node à cette position
-					return commands.insertContentAt(pos, {
-						type: this.name,
-						attrs: { spip_model: attrs },
-					});
-				},
+				// On récupère la position courante du curseur
+				const pos = state.selection.$anchor.pos;
+				// On insère la node à cette position
+				return commands.insertContentAt(pos, {
+					type: this.name,
+					attrs: { spip_model: attrs },
+				});
+			},
 
 			// Mettre à jour la node existante
 			updateSpipModel:
       (options) =>
       ({ commands }) => {
-        const { name, id, params = {} } = options;
-
-        // Reconstruire full, raw_params, paramStrings…
-        const paramStrings = Object.entries(params).map(([k, v]) => v==null ? `${k}` : `${k}=${v}`);
-        const raw_params   = paramStrings.length ? '|' + paramStrings.join('|') : '';
-        const idPart       = id ? id : '';
-        const full         = `<${name}${idPart}${raw_params}>`;
-        const attrs = { full, name, id: idPart, raw_params, params: paramStrings };
+				// Reconstruire les attributs complets à partir des options simplifiés de la commande
+				const attrs = generateSpipModelAttributes(options);
 
         // On se sert de la commande updateAttributes
         return commands.updateAttributes(this.name, { spip_model: attrs });
       },
 		};
 	},
-  
-  addProseMirrorPlugins() {
-    return [
-      new Plugin({
-        props: {
-          handleClickOn(view, pos, node, nodePos, event) {
-            if (node.type.name === 'spip_model') {
-							// URL de base pour appeler la box
-							var url_box = window.spipConfig.markdown_editor.url_modeles + '&modalbox=oui';
-							
-							// On rajoute les infos du modèle déjà là
-							url_box = parametre_url(url_box, 'modele', node.attrs.spip_model.name);
-							url_box = node.attrs.spip_model.id ? parametre_url(url_box, 'id_modele', node.attrs.spip_model.id) : url_box;
-							url_box += node.attrs.spip_model.raw_params.replaceAll('|', '&');
-							
-              // Ouvre la modalbox SPIP
-							jQuery.modalbox(
-								url_box,
-								{
-									type: 'ajax',
-									sideBar: 'end',
-									className: 'lat popin',
-									onClose: (event) => {
-										const modele = event.target.querySelector('#code_modele_modalbox');
-										
-										// Si on trouve le champ
-										if (modele) {
-											const json = event.target.querySelector('#code_modele_modalbox').dataset.spip_model;
-											
-											if (json) {
-												const description = JSON.parse(json);
-												
-												editor.chain().focus().updateSpipModel(description).run();
-											}
-										}
-									}
-								}
-							);
-              
-              return true;
-            }
-            
-            return false;
-          },
-        },
-      }),
-    ];
-  },
   
   addStorage() {
     return {

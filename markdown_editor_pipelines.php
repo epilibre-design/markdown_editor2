@@ -8,12 +8,14 @@ function markdown_editor_header_prive($flux) {
 	$toolbars = pipeline('markdown_editor_toolbars', ['args' => [], 'data' => []]);
 	$toolbars = json_encode($toolbars);
 	$url_modeles = generer_url_ecrire('inserer_modeles', 'var_zajax=contenu', true);
+	$url_previsu = generer_url_action('markdown_editor_compiler_modele', '', true);
 	
 	$flux .= "<script type=\"module\">
 	window.spipConfig = window.spipConfig || {};
 	window.spipConfig.markdown_editor = {
 		toolbars: {$toolbars},
-		url_modeles: \"{$url_modeles}\"
+		url_modeles: \"{$url_modeles}\",
+		url_previsu: \"{$url_previsu}\"
 	};
 	</script>";
 	
@@ -177,4 +179,18 @@ function markdown_editor_toolbars($flux) {
 	];
 	
 	return $flux;
+}
+
+function markdown_editor_autoriser($flux) {
+	return $flux;
+}
+
+function autoriser_markdowneditormodele_previsualiser_dist($faire, $type, $id, $qui, $options) {
+	if (test_espace_prive()) {
+		return autoriser('ecrire');
+	} else {
+		// dans le public on autorise pour les admins uniquement par défaut
+		// a personaliser si besoin
+		return ($qui['statut'] === '0minirezo' && !$qui['restreint']);
+	}
 }
