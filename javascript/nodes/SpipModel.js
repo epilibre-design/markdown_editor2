@@ -133,7 +133,8 @@ const SpipModel = Node.create({
 						// On rajoute les infos du modèle déjà là
 						url_box = parametre_url(url_box, 'modele', node.attrs.spip_model.name);
 						url_box = node.attrs.spip_model.id ? parametre_url(url_box, 'id_modele', node.attrs.spip_model.id) : url_box;
-						url_box += node.attrs.spip_model.raw_params.replaceAll('|', '&');
+						url_box += encodeURI(node.attrs.spip_model.raw_params.replaceAll('|', '&'));
+						console.log(url_box);
 						
 						// Ouvre la modalbox SPIP
 						jQuery.modalbox(
@@ -148,7 +149,6 @@ const SpipModel = Node.create({
 									// Si on trouve le champ
 									if (modele && modele.dataset.spip_model) {
 										const attrs = generateSpipModelAttributes(JSON.parse(modele.dataset.spip_model));
-										console.log(attrs);
 										
 										// On met à jour le node
 										view.dispatch(
