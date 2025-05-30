@@ -10,6 +10,8 @@ return [
 	'outil_code_title' => 'Code en ligne',
 	'outil_editormode_markdown_label' => 'Édition du code',
 	'outil_editormode_wysiwyg_label' => 'Édition visuelle',
+	'outil_fullscreen_enter_label' => 'Plein écran',
+	'outil_fullscreen_exit_label' => 'Quitter le plein écran',
 	'outil_heading_labelbase' => 'Titre',
 	'outil_indent_label' => 'Indenter',
 	'outil_italic_label' => 'Italique',

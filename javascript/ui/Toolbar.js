@@ -11,6 +11,7 @@ import LinkPopover from './LinkPopover.js';
 import UndoRedoButton from './UndoRedoButton.js';
 import SpipModelButton from './SpipModelButton.js';
 import EditorModeButton from './EditorModeButton.js';
+import FullscreenToggleButton from './FullscreenToggleButton.js';
 // importer aussi NodeButton, HeaderList… au besoin
 
 /**
@@ -81,6 +82,7 @@ Toolbar.registerComponent('LinkPopover', LinkPopover);
 Toolbar.registerComponent('UndoRedoButton', UndoRedoButton);
 Toolbar.registerComponent('SpipModelButton', SpipModelButton);
 Toolbar.registerComponent('EditorModeButton', EditorModeButton);
+Toolbar.registerComponent('FullscreenToggleButton', FullscreenToggleButton);
 //~ Toolbar.registerComponent('NodeButton', NodeButton);
 //~ Toolbar.registerComponent('HeaderList', HeaderList);
 

@@ -170,6 +170,11 @@ function markdown_editor_toolbars($flux) {
 						'labelWysiwyg' => _T('markdown_editor:outil_editormode_wysiwyg_label'),
 						'labelMarkdown' => _T('markdown_editor:outil_editormode_markdown_label'),
 					],
+					[
+						'component' => 'FullscreenToggleButton',
+						'enterLabel' => _T('markdown_editor:outil_fullscreen_enter_label'),
+						'exitLabel' => _T('markdown_editor:outil_fullscreen_exit_label'),
+					],
 				],
 			],
 		],
