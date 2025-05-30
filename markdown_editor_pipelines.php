@@ -171,6 +171,9 @@ function markdown_editor_toolbars($flux) {
 						'labelMarkdown' => _T('markdown_editor:outil_editormode_markdown_label'),
 					],
 					[
+						'component' => 'Separator',
+					],
+					[
 						'component' => 'FullscreenToggleButton',
 						'enterLabel' => _T('markdown_editor:outil_fullscreen_enter_label'),
 						'exitLabel' => _T('markdown_editor:outil_fullscreen_exit_label'),
