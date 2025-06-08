@@ -134,7 +134,6 @@ const SpipModel = Node.create({
 						url_box = parametre_url(url_box, 'modele', node.attrs.spip_model.name);
 						url_box = node.attrs.spip_model.id ? parametre_url(url_box, 'id_modele', node.attrs.spip_model.id) : url_box;
 						url_box += encodeURI(node.attrs.spip_model.raw_params.replaceAll('|', '&'));
-						console.log(url_box);
 						
 						// Ouvre la modalbox SPIP
 						jQuery.modalbox(

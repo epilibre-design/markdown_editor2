@@ -138,6 +138,7 @@ function markdown_editor_toolbars($flux) {
 							'remove' => _T('markdown_editor:outil_link_remove_label'),
 						],
 						'iconOnly' => true,
+						//~ 'autoOpenOnLink' => true,
 					],
 				],
 			],
