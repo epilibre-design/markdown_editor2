@@ -1,9 +1,9 @@
 <traduction
 	module="inserer_modeles"
-	id="inserer_modeles--inserer_modeles-f3ec3"
+	id="inserer_modeles--markdown_editor-b9c1f"
 	gestionnaire="salvatore"
 	url="https://trad.spip.net"
-	source="https://git.spip.net/spip-contrib-extensions/inserer_modeles.git"
+	source="https://git.spip.net/spip-contrib-extensions/markdown_editor.git"
 	reference="fr">
 	<langue code="en" url="https://trad.spip.net/tradlang_module/inserer_modeles?lang_cible=en" total="35" traduits="29" relire="1" modifs="0" nouveaux="5" pourcent="82.86">
 		<traducteur nom="Benitron" lien="https://trad.spip.net/auteur/benitron" />
