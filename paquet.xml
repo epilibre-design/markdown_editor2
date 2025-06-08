@@ -13,6 +13,9 @@
 	<credit lien="https://tiptap.dev">TipTap</credit>
 	
 	<necessite nom="markdown" />
+	<necessite nom="yaml" />
+	<necessite nom="saisies" />
+	<necessite nom="verifier" />
 	
 	<pipeline nom="markdown_editor_toolbars" inclure="markdown_editor_pipelines.php" action="toolbars" />
 	<pipeline nom="header_prive" inclure="markdown_editor_pipelines.php" />
