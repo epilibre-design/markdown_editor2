@@ -1,0 +1,9 @@
+<traduction
+	module="paquet-markdown_editor"
+	id="paquet-markdown_editor--markdown_editor-b9c1f"
+	gestionnaire="salvatore"
+	url="https://trad.spip.net"
+	source="https://git.spip.net/spip-contrib-extensions/markdown_editor.git"
+	reference="fr">
+	<langue code="fr" url="https://trad.spip.net/tradlang_module/markdown_editor-paquet-xml-markdown_editor?lang_cible=fr" total="3" traduits="3" relire="0" modifs="0" nouveaux="0" pourcent="100.00" />
+</traduction>
