@@ -34,6 +34,7 @@ const SpipModel = Node.create({
   group: 'inline',  // Use 'block' if you want it to be a block-level node instead
   inline: true,     // This allows it to be inline within text, or set to false for a block-level node
   atom: true,       // Treat it as a single, unbreakable unit
+  draggable: true,
   
   parseHTML() {
     return [
