@@ -5,11 +5,16 @@
 
 return [
 
+	// A
+	'activer_categorie' => 'Reagrupar os modelos propostos em categoria',
+
 	// B
 	'bouton_choisir' => 'Selecionar',
 	'bouton_inserer' => 'Inserir',
 
 	// C
+	'categorie_defaut_label' => 'Outra',
+	'categorie_medias_label' => 'Mídia',
 	'choisir_modele' => 'O que você quer inserir?',
 	'choix_objets_editable' => 'Objetos onde propor a inserção de modelos.',
 	'choix_objets_editable_explication' => 'Selecione um ou mais objetos nos quais você deseja que o bloco de inserção de modelos apareça. Note que em todos os caso, o porte-plume (barra tipográfica) oferecerá os modelos.',
