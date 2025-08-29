@@ -20,5 +20,7 @@ function action_markdown_editor_analyser_lien_dist() {
 		$retour = $r;
 	}
 	
+	$retour['url'] = html_entity_decode($retour['url']);
+	
 	echo json_encode($retour);
 }

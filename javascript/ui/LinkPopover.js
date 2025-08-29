@@ -162,8 +162,29 @@ export class LinkPopover {
 	}
 
 	openLink() {
-		const href = this.hrefInput.value;
-		if (href) window.open(href, '_blank');
+		let href = this.hrefInput.value;
+		
+		// On appelle la grosse artillerie de test seulement si c'est pas déjà une URL absolue avec le protocole
+		try {
+			new URL(href);
+			window.open(href, '_blank');
+		}
+		catch(e) {
+			// On teste si c'est pas un objet SPIP
+			fetch(window.spipConfig.markdown_editor.url_analyser_lien, {
+				method: 'POST',
+				credentials: 'same-origin',
+				body: new URLSearchParams({ url: href }),
+			})
+				.then(r => r.json())
+				.then(data => {
+					href = data.url || href;
+					window.open(href, '_blank');
+				})
+				.catch(() => {
+					window.open(href, '_blank');
+				});
+		}
 	}
 
 	removeLink() {
