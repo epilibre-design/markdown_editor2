@@ -1,6 +1,5 @@
 import { Editor } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
-import Link from '@tiptap/extension-link';
 import Table from '@tiptap/extension-table';
 import TableCell from '@tiptap/extension-table-cell';
 import TableHeader from '@tiptap/extension-table-header';
@@ -8,6 +7,7 @@ import TableRow from '@tiptap/extension-table-row';
 import Subscript from '@tiptap/extension-subscript';
 import Superscript from '@tiptap/extension-superscript';
 import Typography from '@tiptap/extension-typography';
+import SpipLink from './marks/SpipLink';
 import SpipMultiInline from './nodes/SpipMultiInline';
 import SpipMultiBlock from './nodes/SpipMultiBlock';
 import SpipLang from './nodes/SpipLang';
@@ -63,7 +63,7 @@ export function launch_markdown_editor() {
 								HTMLAttributes: { class: 'spip'},
 							},
 						}),
-						Link.configure({
+						SpipLink.configure({
 							openOnClick: false,
 							autolink: true,
 							defaultProtocol: 'https',
