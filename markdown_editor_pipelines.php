@@ -9,13 +9,15 @@ function markdown_editor_header_prive($flux) {
 	$toolbars = json_encode($toolbars);
 	$url_modeles = generer_url_ecrire('inserer_modeles', 'var_zajax=contenu', true);
 	$url_previsu = generer_url_action('markdown_editor_compiler_modele', '', true);
+	$url_analyser_lien = generer_url_action('markdown_editor_analyser_lien', '', true);
 	
 	$flux .= "<script type=\"module\">
 	window.spipConfig = window.spipConfig || {};
 	window.spipConfig.markdown_editor = {
 		toolbars: {$toolbars},
 		url_modeles: \"{$url_modeles}\",
-		url_previsu: \"{$url_previsu}\"
+		url_previsu: \"{$url_previsu}\",
+		url_analyser_lien: \"{$url_analyser_lien}\"
 	};
 	</script>";
 	

@@ -63,6 +63,14 @@
 
 /* Les nodes et marks supplémentaires propres à SPIP */
 
+a[data-spip_autotitle] {
+	cursor: text;
+}
+a[data-spip_autotitle]::before {
+  content: attr(data-spip_autotitle);
+  pointer-events: auto;
+}
+
 .spip-model {
   background-color: var(--spip-color-theme-lighter);  /* Example styling */
   padding: 2px 4px;
