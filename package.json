@@ -10,6 +10,7 @@
     "@tiptap/extension-table-header": "^2.5.9",
     "@tiptap/extension-table-row": "^2.5.9",
     "@tiptap/extension-typography": "^2.5.9",
+    "@tiptap/extension-invisible-characters": "^2.5.9",
     "@tiptap/pm": "^2.5.9",
     "@tiptap/starter-kit": "^2.5.9",
     "tiptap-markdown": "^0.8.10"

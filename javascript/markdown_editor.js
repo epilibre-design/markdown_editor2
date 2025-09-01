@@ -7,6 +7,7 @@ import TableRow from '@tiptap/extension-table-row';
 import Subscript from '@tiptap/extension-subscript';
 import Superscript from '@tiptap/extension-superscript';
 import Typography from '@tiptap/extension-typography';
+import InvisibleCharacters, { HardBreakNode } from '@tiptap/extension-invisible-characters'
 import SpipLink from './marks/SpipLink';
 import SpipMultiInline from './nodes/SpipMultiInline';
 import SpipMultiBlock from './nodes/SpipMultiBlock';
@@ -78,6 +79,9 @@ export function launch_markdown_editor() {
 						Subscript,
 						Superscript,
 						Typography,
+						InvisibleCharacters.configure({
+							builders: [new HardBreakNode()],
+						}),
 						Markdown4Spip,
 						SpipTrailingNode,
 				],
