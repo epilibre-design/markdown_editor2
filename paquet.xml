@@ -1,6 +1,6 @@
 <paquet
 	prefix="markdown_editor"
-	version="1.0.0"
+	version="1.0.1"
 	etat="stable"
 	compatibilite="[4.2.0;4.*]"
 	logo="markdown_editor.svg"
