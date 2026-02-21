@@ -29,7 +29,7 @@ function markdown_editor_header_prive($flux) {
 
 // Listes prédéfinies de boutons d'interface
 function markdown_editor_toolbars($flux) {
-	$flux = [
+	$flux['data'] = [
 		'edition' => [
 			[
 				'component' => 'ButtonsGroup',
