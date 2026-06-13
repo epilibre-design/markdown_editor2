@@ -1,0 +1,52 @@
+From d793bb8a75adecfcc20a1b04c86bde9e714d9217 Mon Sep 17 00:00:00 2001
+From: gilles <gillesvincent@gmail.com>
+Date: Tue, 12 May 2026 12:03:16 +0200
+Subject: [PATCH] Fix telechargement d'un plugin via spip-cli
+
+---
+ src/Command/PluginsSvpTelecharger.php | 20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
+
+diff --git a/src/Command/PluginsSvpTelecharger.php b/src/Command/PluginsSvpTelecharger.php
+index 8e74cee..ecedb2b 100644
+--- a/src/Command/PluginsSvpTelecharger.php
++++ b/src/Command/PluginsSvpTelecharger.php
+@@ -20,7 +20,7 @@ class PluginsSvpTelecharger extends PluginsActiver
+ 
+         foreach ($prefixes as $prefix) {
+             $this->io->comment("Plugin en cours d'installation : " . $prefix);
+-            $infos = $decideur->infos_courtes('UPPER(pl.prefixe) = LOWER("' . strtoupper($prefix) . '")');
++            $infos = $decideur->infos_courtes('UPPER(pl.prefixe) = UPPER("' . $prefix . '")');
+             if (empty($infos['i'])) {
+                 $this->io->error('Le plugin ' . $prefix . " n'est pas référencé");
+                 continue;
+@@ -52,9 +52,25 @@ class PluginsSvpTelecharger extends PluginsActiver
+             $actionneur->verrouiller();
+             $actionneur->sauver_actions();
+ 
++            // SPIP normalizes authorization types twice in this path (_plugins -> plugins -> plugin).
++            // Register both forms so teleporter authorization is effectively granted.
+             autoriser_exception('ajouter', '_plugins', '*');
++            autoriser_exception('ajouter', '_plugin', '*');
++            $errorCount = count($actionneur->err);
+             while ($res = $actionneur->one_action()) {
+-                $this->io->comment($res['n'] . ' action réalisée : ' . $res['todo']);
++                $lastDone = end($actionneur->done) ?: [];
++                reset($actionneur->done);
++
++                if (!empty($lastDone['done'])) {
++                    $this->io->comment($res['n'] . ' action réalisée : ' . $res['todo']);
++                    continue;
++                }
++
++                $this->io->error($res['n'] . ' action en échec : ' . $res['todo']);
++                foreach (array_slice($actionneur->err, $errorCount) as $error) {
++                    $this->io->error($error);
++                }
++                $errorCount = count($actionneur->err);
+             }
+ 
+             $actionneur->deverrouiller();
+-- 
+GitLab
+
