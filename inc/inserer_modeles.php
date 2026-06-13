@@ -106,7 +106,7 @@ function charger_infos_formulaire_modele($formulaire) {
 function inserer_modeles_definir_defaut($saisies) {
 	foreach ($saisies as &$saisie) {
 		if (!is_array($saisie)) {
-			return $tableau;
+			continue;
 		}
 		$options = &$saisie['options'];
 		if (isset($options['defaut']) and strpos($options['defaut'], 'fonction:') === 0) {

@@ -28,6 +28,24 @@ final class DefinirDefautTest extends TestCase
         $this->assertSame('AB', $resultat[0]['options']['defaut']);
     }
 
+    /**
+     * Une entrée non-tableau dans la liste des saisies doit être ignorée,
+     * sans faire perdre les saisies valides ni retourner null.
+     * (Régression de l'ancien `return $tableau;` sur variable indéfinie.)
+     */
+    public function testEntreeNonTableauNeCassePasLaFonction(): void
+    {
+        $saisies = [
+            ['saisie' => 'input', 'options' => ['nom' => 'x', 'defaut' => 'doc']],
+            'parasite', // entrée mal formée
+        ];
+        $resultat = inserer_modeles_definir_defaut($saisies);
+
+        $this->assertIsArray($resultat, 'La fonction ne devrait pas retourner null');
+        $this->assertArrayHasKey(0, $resultat, 'La saisie valide ne doit pas être perdue');
+        $this->assertSame('doc', $resultat[0]['options']['defaut']);
+    }
+
     public function testSaisiesImbriqueesParcouruesRecursivement(): void
     {
         $saisies = [
