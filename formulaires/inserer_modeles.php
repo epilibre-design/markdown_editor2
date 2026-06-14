@@ -24,6 +24,55 @@ function inserer_modeles_etat_formulaire_modele($formulaire_modele, $env): strin
 	return (string) $formulaire_modele;
 }
 
+function formulaires_inserer_modeles_saisies_dist($formulaire_modele, $modalbox, $env) {
+	include_spip('inc/inserer_modeles');
+	$formulaire_modele = inserer_modeles_etat_formulaire_modele($formulaire_modele, $env);
+
+	$options = [
+		'ajax' => true,
+		'squelette_boutons' => 'formulaires/inserer_modeles_boutons',
+	];
+
+	$ctx_entete = [
+		'formulaire_modele' => $formulaire_modele,
+		'modalbox' => ($modalbox != '' ? 'oui' : ''),
+		'_code_modele' => _request('_code_modele'),
+		'_json_editeur' => _request('_json_editeur'),
+		'_js_inserer_code' => _request('_js_inserer_code'),
+	];
+
+	// État (a) : choix du modèle
+	if ($formulaire_modele === '') {
+		$options['inserer_debut'] = recuperer_fond('formulaires/inserer_modeles_entete', $ctx_entete);
+		$modeles_dispo = inserer_modeles_lister_formulaires_modeles(true);
+		$saisie_liste = inserer_modeles_generer_saisie_formulaire_modele($modeles_dispo, boolval($modalbox));
+		return [
+			'options' => $options,
+			$saisie_liste,
+		];
+	}
+
+	// État (b) : paramètres du modèle choisi
+	$infos_modele = charger_infos_formulaire_modele($formulaire_modele);
+	$ctx_entete['_nom'] = _T_ou_typo($infos_modele['nom']);
+	if (isset($infos_modele['icone_barre'])) {
+		$ctx_entete['icone_barre'] = inserer_modeles_find_icone_barre_path($infos_modele['icone_barre']);
+	}
+	$options['inserer_debut'] = recuperer_fond('formulaires/inserer_modeles_entete', $ctx_entete);
+
+	$saisies = [
+		'options' => $options,
+		[
+			'saisie' => 'hidden',
+			'options' => ['nom' => 'formulaire_modele', 'defaut' => $formulaire_modele],
+		],
+	];
+	foreach ($infos_modele['parametres'] as $parametre) {
+		$saisies[] = $parametre;
+	}
+	return $saisies;
+}
+
 function inserer_modeles_retrouver_formulaire_modele($modele) {
 	include_spip('inc/inserer_modeles');
 	$formulaire_modele = null;
