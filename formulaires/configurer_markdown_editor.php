@@ -13,11 +13,11 @@ function formulaires_configurer_markdown_editor_saisies_dist(): array {
 			'options' => ['nom' => '_meta_casier', 'defaut' => 'inserer_modeles'],
 		],
 		[
-			'saisie'  => 'cases',
+			'saisie'  => 'checkbox',
 			'options' => [
 				'nom'   => 'ignorer_modeles',
 				'label' => _T('inserer_modeles:ignorer_modeles'),
-				'data'  => $data,
+				'datas' => $data,
 			],
 		],
 		[
