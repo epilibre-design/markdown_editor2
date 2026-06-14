@@ -6,6 +6,7 @@ return [
 
 	// A
 	'activer_categorie' => 'Regrouper les modèles proposés en catégorie',
+	'aucun_modele_disponible' => 'Aucun modèle disponible.',
 
 	// B
 	'bouton_choisir' => 'Choisir',

@@ -45,6 +45,15 @@ function formulaires_inserer_modeles_saisies_dist($formulaire_modele, $modalbox,
 	if ($formulaire_modele === '') {
 		$options['inserer_debut'] = recuperer_fond('formulaires/inserer_modeles_entete', $ctx_entete);
 		$modeles_dispo = inserer_modeles_lister_formulaires_modeles(true);
+		if (empty($modeles_dispo)) {
+			return [
+				'options' => $options,
+				[
+					'saisie'  => 'explication',
+					'options' => ['texte' => _T('inserer_modeles:aucun_modele_disponible')],
+				],
+			];
+		}
 		$saisie_liste = inserer_modeles_generer_saisie_formulaire_modele($modeles_dispo, boolval($modalbox));
 		return [
 			'options' => $options,
@@ -165,6 +174,13 @@ function formulaires_inserer_modeles_charger_dist($formulaire_modele, $modalbox,
 
 	if ($modalbox != '') {
 		$contexte['modalbox'] = 'oui';
+	}
+
+	if ($formulaire_modele === '') {
+		$modeles_dispo = inserer_modeles_lister_formulaires_modeles(true);
+		if (empty($modeles_dispo)) {
+			$contexte['pas_de_modeles'] = 'oui';
+		}
 	}
 
 	return $contexte;

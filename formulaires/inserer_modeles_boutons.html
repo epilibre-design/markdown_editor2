@@ -7,6 +7,6 @@
 	<button type="submit" class="submit" name="inserer" value="1"><:inserer_modeles:bouton_inserer:></button>
 ]
 [(#ENV{formulaire_modele}|non)
-	<button type="submit" class="submit" name="choisir" value="1"><:inserer_modeles:bouton_choisir:></button>
+	<button type="submit" class="submit" name="choisir" value="1"[(#ENV{pas_de_modeles}|oui) disabled]><:inserer_modeles:bouton_choisir:></button>
 ]
 </p>
