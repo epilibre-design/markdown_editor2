@@ -1,6 +1,9 @@
 <p class="boutons">
 [(#ENV{formulaire_modele}|oui)
-	[(#ENV{ne_pas_afficher_bouton_annuler}|non)<button type="submit" class="submit btn_secondaire" name="annuler" value="1" formnovalidate><:bouton_annuler:></button>]
+	[(#ENV{ne_pas_afficher_bouton_annuler}|non)
+		[(#ENV{modalbox}|oui)<button type="button" class="submit btn_secondaire" onclick="jQuery.modalboxclose()"><:bouton_annuler:></button>]
+		[(#ENV{modalbox}|non)<button type="submit" class="submit btn_secondaire" name="annuler" value="1" formnovalidate><:bouton_annuler:></button>]
+	]
 	<button type="submit" class="submit" name="inserer" value="1"><:inserer_modeles:bouton_inserer:></button>
 ]
 [(#ENV{formulaire_modele}|non)

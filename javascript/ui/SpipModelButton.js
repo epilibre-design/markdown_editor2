@@ -32,11 +32,13 @@ export class SpipModelButton {
 						// Si on trouve le champ
 						if (modele) {
 							const json = event.target.querySelector('#code_modele_modalbox').dataset.spip_model;
-							
+
 							if (json) {
 								const description = JSON.parse(json);
-								
-								editor.chain().focus().insertSpipModel(description).run();
+
+								if (description && description.name) {
+									editor.chain().focus().insertSpipModel(description).run();
+								}
 							}
 						}
 						

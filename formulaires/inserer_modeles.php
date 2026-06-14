@@ -67,8 +67,23 @@ function formulaires_inserer_modeles_saisies_dist($formulaire_modele, $modalbox,
 			'options' => ['nom' => 'formulaire_modele', 'defaut' => $formulaire_modele],
 		],
 	];
-	foreach ($infos_modele['parametres'] as $parametre) {
+	$parametres = _request('inserer')
+		? $infos_modele['parametres']
+		: inserer_modeles_desactiver_obligatoire($infos_modele['parametres']);
+	foreach ($parametres as $parametre) {
 		$saisies[] = $parametre;
+	}
+	return $saisies;
+}
+
+function inserer_modeles_desactiver_obligatoire(array $saisies): array {
+	foreach ($saisies as &$saisie) {
+		if (isset($saisie['options']['obligatoire'])) {
+			$saisie['options']['obligatoire'] = false;
+		}
+		if (isset($saisie['saisies'])) {
+			$saisie['saisies'] = inserer_modeles_desactiver_obligatoire($saisie['saisies']);
+		}
 	}
 	return $saisies;
 }
@@ -157,6 +172,12 @@ function formulaires_inserer_modeles_charger_dist($formulaire_modele, $modalbox,
 
 function formulaires_inserer_modeles_verifier_dist($formulaire_modele, $modalbox, $env) {
 	$erreurs = [];
+
+	// Transitions de la machine d'état : bloquer traiter() sans afficher d'erreur.
+	// Un tableau non-vide empêche l'appel à traiter() ; message_erreur='' est invisible.
+	if (_request('annuler') || (_request('choisir') && _request('formulaire_modele'))) {
+		return ['message_erreur' => ''];
+	}
 
 	if (_request('choisir') && !_request('formulaire_modele')) {
 		$erreurs['message_erreur'] = _T('inserer_modeles:erreur_choix_modele');
