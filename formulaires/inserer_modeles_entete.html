@@ -1,7 +1,8 @@
 [(#ENV{formulaire_modele}|non)<h3 class="titrem">
 	<img src="[(#CHEMIN_IMAGE{modele-add-24.svg}|url_absolue)]" class="cadre-icone" />
 	<:inserer_modeles:titre_inserer_modeles:>
-</h3>]
+</h3>
+[(#ENV{aucun_modele}|oui)<p class="avertissement"><:inserer_modeles:aucun_modele_disponible:></p>]]
 [(#ENV{formulaire_modele}|oui)<h3 class="titrem">
 	[(#ENV{icone_barre}|balise_img|liens_absolus)&nbsp;]<:inserer_modeles:titre_inserer{modele=#ENV{_nom}}:>
 </h3>

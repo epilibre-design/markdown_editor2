@@ -43,16 +43,13 @@ function formulaires_inserer_modeles_saisies_dist($formulaire_modele, $modalbox,
 
 	// État (a) : choix du modèle
 	if ($formulaire_modele === '') {
-		$options['inserer_debut'] = recuperer_fond('formulaires/inserer_modeles_entete', $ctx_entete);
 		$modeles_dispo = inserer_modeles_lister_formulaires_modeles(true);
 		if (empty($modeles_dispo)) {
-			return [
-				'options' => $options,
-				[
-					'saisie'  => 'explication',
-					'options' => ['texte' => _T('inserer_modeles:aucun_modele_disponible')],
-				],
-			];
+			$ctx_entete['aucun_modele'] = 'oui';
+		}
+		$options['inserer_debut'] = recuperer_fond('formulaires/inserer_modeles_entete', $ctx_entete);
+		if (empty($modeles_dispo)) {
+			return ['options' => $options];
 		}
 		$saisie_liste = inserer_modeles_generer_saisie_formulaire_modele($modeles_dispo, boolval($modalbox));
 		return [
