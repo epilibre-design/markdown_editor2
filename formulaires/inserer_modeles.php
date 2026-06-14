@@ -1,5 +1,29 @@
 <?php
 
+/**
+ * Résout l'état du formulaire d'insertion de modèle.
+ *
+ * @param string $formulaire_modele Préfixe éventuellement imposé par l'appel.
+ * @param string|array $env Environnement (sérialisé ou déjà tableau).
+ * @return string '' pour l'état liste (a), le préfixe du modèle pour l'état paramètres (b).
+ */
+function inserer_modeles_etat_formulaire_modele($formulaire_modele, $env): string {
+	include_spip('inc/inserer_modeles');
+	if (is_string($env)) {
+		$env = unserialize($env) ?: [];
+	}
+	if (!$formulaire_modele && isset($env['modele'])) {
+		$formulaire_modele = inserer_modeles_retrouver_formulaire_modele($env['modele']);
+	}
+	if (_request('annuler')) {
+		return '';
+	}
+	if (!$formulaire_modele) {
+		$formulaire_modele = _request('formulaire_modele');
+	}
+	return (string) $formulaire_modele;
+}
+
 function inserer_modeles_retrouver_formulaire_modele($modele) {
 	include_spip('inc/inserer_modeles');
 	$formulaire_modele = null;
