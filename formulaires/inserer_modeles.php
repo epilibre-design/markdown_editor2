@@ -100,58 +100,47 @@ function inserer_modeles_retrouver_formulaire_modele($modele) {
 
 function formulaires_inserer_modeles_charger_dist($formulaire_modele, $modalbox, $env) {
 	include_spip('inc/inserer_modeles');
-	$env = unserialize($env);
+	$formulaire_modele_arg = $formulaire_modele;
+	$env_array = unserialize($env);
 	$contexte = [];
-	
-	// Toujours transmettre les id_(article/rubrique/breve...), et les garder en _request pour pouvoir s'en servir après dans l'interprétation du .yaml
-	foreach ($env as $var => $val) {
+
+	// Toujours transmettre les id_(article/rubrique/breve...) et les garder en _request
+	foreach ($env_array as $var => $val) {
 		if (substr($var, 0, 3) == 'id_' && is_numeric($val)) {
 			$contexte[$var] = $val;
 			set_request($var, $val);
 		}
 	}
-	
-	// Si le formulaire est vide mais qu'il y a un modèle passé en paramètre, on tente de retrouver le formulaire
-	if (!$formulaire_modele && isset($env['modele'])) {
-		$formulaire_modele = inserer_modeles_retrouver_formulaire_modele($env['modele']);
-	}
-	
-	if ((!_request('formulaire_modele') && $formulaire_modele == '') || _request('annuler')) {
-		$modeles_dispo = inserer_modeles_lister_formulaires_modeles(true);
-		$contexte['_liste_formulaires_modeles'] = [inserer_modeles_generer_saisie_formulaire_modele($modeles_dispo, boolval($modalbox))];
-	} else {
-		if ($formulaire_modele != '') {
+
+	$formulaire_modele = inserer_modeles_etat_formulaire_modele($formulaire_modele, $env_array);
+
+	// État (b) : un modèle est choisi
+	if ($formulaire_modele !== '') {
+		if ($formulaire_modele_arg != '') {
 			$contexte['ne_pas_afficher_bouton_annuler'] = 'on';
-		}
-		if ($formulaire_modele == '') {
-			$formulaire_modele = _request('formulaire_modele');
 		}
 		$infos_modele = charger_infos_formulaire_modele($formulaire_modele);
 		include_spip('inc/saisies');
 		$champs_saisies = saisies_charger_champs($infos_modele['parametres']);
-		// On charge les valeurs éventuellement passées par l'url
+		// Valeurs éventuellement passées par l'url
 		foreach ($champs_saisies as $champ => $val) {
 			if ($valeur = _request($champ)) {
 				$champs_saisies[$champ] = $valeur;
 			}
-			
-			// Cas particulier pour "align" dont seule la valeur est transmise
+			// Cas particulier "align" dont seule la valeur est transmise
 			foreach (['left', 'center', 'right'] as $align) {
-				if (isset($env[$align])) {
+				if (isset($env_array[$align])) {
 					$champs_saisies['align'] = $align;
 				}
 			}
 		}
 		$contexte = array_merge($contexte, $champs_saisies);
-
 		$contexte['formulaire_modele'] = $formulaire_modele;
 		$contexte['_nom'] = _T_ou_typo($infos_modele['nom']);
 		if (isset($infos_modele['icone_barre'])) {
 			$contexte['icone_barre'] = inserer_modeles_find_icone_barre_path($infos_modele['icone_barre']);
 		}
-		$contexte['_saisies'] = $infos_modele['parametres'];
-
-		// Reinjection de différentes choses "postées"
+		// Réinjection de différentes choses "postées"
 		foreach (['_code_modele', '_json_editeur', '_js_inserer_code', '_markItUpfocused'] as $request) {
 			if ($valeur = _request($request)) {
 				$contexte[$request] = $valeur;
