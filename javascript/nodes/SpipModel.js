@@ -8,6 +8,7 @@ const spip_model_pattern_parse_block = /^(<([a-z_-]{3,})\s*([0-9]*)\s*([|](?:<[^
 
 // Générer les attributs complets à partir des données centrales
 export function generateSpipModelAttributes(options) {
+	if (!options || Array.isArray(options) || !options.name) return null;
 	const { name, id, params = {} } = options;
 
 	// Construire raw_params et full
@@ -134,7 +135,7 @@ const SpipModel = Node.create({
 						// On rajoute les infos du modèle déjà là
 						url_box = parametre_url(url_box, 'modele', node.attrs.spip_model.name);
 						url_box = node.attrs.spip_model.id ? parametre_url(url_box, 'id_modele', node.attrs.spip_model.id) : url_box;
-						url_box += encodeURI(node.attrs.spip_model.raw_params.replaceAll('|', '&'));
+						url_box += encodeURI((node.attrs.spip_model.raw_params || '').replaceAll('|', '&'));
 						
 						// Ouvre la modalbox SPIP
 						jQuery.modalbox(
@@ -149,7 +150,8 @@ const SpipModel = Node.create({
 									// Si on trouve le champ
 									if (modele && modele.dataset.spip_model) {
 										const attrs = generateSpipModelAttributes(JSON.parse(modele.dataset.spip_model));
-										
+										if (!attrs) return;
+
 										// On met à jour le node
 										view.dispatch(
 											view.state.tr.setNodeMarkup(getPos(), undefined, {
@@ -211,7 +213,7 @@ const SpipModel = Node.create({
               full: match[0],
               name: match[2],
               id: match[3],
-              raw_params: match[4],
+              raw_params: match[4] || '',
               params: match[4] ? match[4].split('|').slice(1) : [],
             },
           }
@@ -231,7 +233,7 @@ const SpipModel = Node.create({
               full: match[0],
               name: match[2],
               id: match[3],
-              raw_params: match[4],
+              raw_params: match[4] || '',
               params: match[4] ? match[4].split('|').slice(1) : [],
             },
           }

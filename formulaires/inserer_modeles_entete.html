@@ -1,0 +1,18 @@
+[(#ENV{formulaire_modele}|non)<h3 class="titrem">
+	<img src="[(#CHEMIN_IMAGE{modele-add-24.svg}|url_absolue)]" class="cadre-icone" />
+	<:inserer_modeles:titre_inserer_modeles:>
+</h3>
+[(#ENV{aucun_modele}|oui)<p class="avertissement"><:inserer_modeles:aucun_modele_disponible:></p>]]
+[(#ENV{formulaire_modele}|oui)<h3 class="titrem">
+	[(#ENV{icone_barre}|balise_img|liens_absolus)&nbsp;]<:inserer_modeles:titre_inserer{modele=#ENV{_nom}}:>
+</h3>
+[<textarea readonly="readonly" class="code_modele" id="code_modele[(#ENV{modalbox}|?{'_modalbox',''})]"[ data-spip_model="(#ENV{_json_editeur})" ][ (#ENV{_code_modele}|et{#ENV{_js_inserer_code}}|oui)ondblclick="#ENV**{_js_inserer_code}"]>(#ENV{_code_modele})</textarea>]
+[(#ENV{_code_modele}|et{#ENV{modalbox}|=={oui}}|oui)
+	<script type="module">
+		var code_modele = $("#code_modele_modalbox").text();
+		if (code_modele != '') {
+			jQuery.modalboxclose();
+		}
+	</script>
+]
+]

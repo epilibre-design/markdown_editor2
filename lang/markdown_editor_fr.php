@@ -29,4 +29,5 @@ return [
 	'outil_strike_title' => 'Barrer le texte',
 	'outil_tasklist_label' => 'Liste de tâches',
 	'outil_undo_label' => 'Annuler',
+	'configuration_titre' => 'Configurer l\'éditeur Markdown',
 ];
